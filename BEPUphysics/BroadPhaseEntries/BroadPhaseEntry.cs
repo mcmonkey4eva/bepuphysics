@@ -21,6 +21,11 @@ namespace BEPUphysics.BroadPhaseEntries
             hashCode = (int)(base.GetHashCode() * 0xd8163841);
         }
 
+        protected BroadPhaseEntry(bool b)
+        {
+
+        }
+
         /// <summary>
         /// Gets the broad phase to which this broad phase entry belongs.
         /// </summary>

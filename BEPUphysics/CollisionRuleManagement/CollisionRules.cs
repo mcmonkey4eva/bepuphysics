@@ -264,6 +264,10 @@ namespace BEPUphysics.CollisionRuleManagement
         ///<returns>Collision rule governing the interaction between the pair.</returns>
         public static CollisionRule GetSpecificCollisionRuleDefault(CollisionRules a, CollisionRules b)
         {
+            if (a == null || b == null || a.specific == null || b.specific == null)
+            {
+                return CollisionRule.Defer;
+            }
             CollisionRule aToB;
             a.specific.WrappedDictionary.TryGetValue(b, out aToB);
             CollisionRule bToA;
@@ -280,7 +284,7 @@ namespace BEPUphysics.CollisionRuleManagement
         ///<returns>Collision rule governing the interaction between the pair.</returns>
         public static CollisionRule GetGroupCollisionRuleDefault(CollisionRules a, CollisionRules b)
         {
-            if (a.group == null || b.group == null)
+            if (a == null || b == null || a.group == null || b.group == null)
                 return CollisionRule.Defer; //This can happen occasionally when objects aren't in a space or are being handled uniquely (like in compound bodies).
             CollisionRule pairRule;
             CollisionGroupRules.TryGetValue(new CollisionGroupPair(a.group, b.group), out pairRule);
@@ -294,6 +298,10 @@ namespace BEPUphysics.CollisionRuleManagement
         ///<returns>Collision rule governing the interaction between the pair.</returns>
         public static CollisionRule GetPersonalCollisionRuleDefault(CollisionRules a, CollisionRules b)
         {
+            if (a == null || b == null)
+            {
+                return CollisionRule.Defer;
+            }
             return a.personal > b.personal ? a.personal : b.personal;
         }
 

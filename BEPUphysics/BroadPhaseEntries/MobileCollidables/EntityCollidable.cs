@@ -19,6 +19,12 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
             //This constructor is used when the subclass is going to set the shape after doing some extra initialization.
         }
 
+        protected EntityCollidable(bool b)
+            : base(b)
+        {
+
+        }
+
         protected EntityCollidable(EntityShape shape)
         {
             base.Shape = shape;
@@ -192,7 +198,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         protected internal abstract void UpdateBoundingBoxInternal(float dt);
 
         //Helper method for mobile collidables.
-        internal void ExpandBoundingBox(ref BoundingBox boundingBox, float dt)
+        public void ExpandBoundingBox(ref BoundingBox boundingBox, float dt)
         {
             //Expand bounding box with velocity.
             if (dt > 0)

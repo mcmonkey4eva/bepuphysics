@@ -20,7 +20,10 @@ namespace BEPUphysics.CollisionShapes
                 ShapeChanged(this);
         }
 
-
+        public CollisionShape Duplicate()
+        {
+            return (CollisionShape)MemberwiseClone();
+        }
 
     }
 }

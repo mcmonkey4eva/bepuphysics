@@ -193,6 +193,11 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateCollision(float dt)
         {
 
+            if (CollidableA.EventTriggerer == null || CollidableB.EventTriggerer == null)
+            {
+                suppressEvents = true;
+            }
+
             if (!suppressEvents)
             {
                 CollidableA.EventTriggerer.OnPairUpdated(CollidableB, this);

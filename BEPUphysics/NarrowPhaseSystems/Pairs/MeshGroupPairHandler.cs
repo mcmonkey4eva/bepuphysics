@@ -254,6 +254,11 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateCollision(float dt)
         {
+            if (CollidableA.EventTriggerer == null || CollidableB.EventTriggerer == null)
+            {
+                suppressEvents = true;
+            }
+
 
             if (!suppressEvents)
             {

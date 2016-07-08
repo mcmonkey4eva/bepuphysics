@@ -18,6 +18,12 @@ namespace BEPUphysics.BroadPhaseEntries
             shapeChangedDelegate = OnShapeChanged;
         }
 
+        protected Collidable(bool b)
+            : base(b)
+        {
+
+        }
+
 
 
         protected internal CollisionShape shape; //Having this non-private allows for some very special-casey stuff; see TriangleShape initialization.

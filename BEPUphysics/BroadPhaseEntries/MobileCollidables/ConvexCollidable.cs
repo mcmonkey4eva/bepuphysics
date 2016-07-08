@@ -11,6 +11,12 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
     public abstract class ConvexCollidable : EntityCollidable
     {
 
+        protected ConvexCollidable()
+            : base(true)
+        {
+
+        }
+
         protected ConvexCollidable(ConvexShape shape)
             : base(shape)
         {
@@ -51,6 +57,11 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
             {
                 return (T)shape;
             }
+        }
+
+        public ConvexCollidable()
+        {
+
         }
 
         ///<summary>

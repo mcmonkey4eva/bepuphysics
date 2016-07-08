@@ -118,8 +118,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
             if (!suppressEvents)
             {
-                CollidableA.EventTriggerer.OnPairCreated(CollidableB, this);
-                CollidableB.EventTriggerer.OnPairCreated(CollidableA, this);
+                CollidableA.EventTriggerer?.OnPairCreated(CollidableB, this);
+                CollidableB.EventTriggerer?.OnPairCreated(CollidableA, this);
             }
         }
 
@@ -138,8 +138,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Children manage the addition of the contact to the constraint, if any.
             if (!suppressEvents)
             {
-                CollidableA.EventTriggerer.OnContactCreated(CollidableB, this, contact);
-                CollidableB.EventTriggerer.OnContactCreated(CollidableA, this, contact);
+                CollidableA.EventTriggerer?.OnContactCreated(CollidableB, this, contact);
+                CollidableB.EventTriggerer?.OnContactCreated(CollidableA, this, contact);
             }
             if (Parent != null)
                 Parent.OnContactAdded(contact);
@@ -151,8 +151,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Children manage the removal of the contact from the constraint, if any.
             if (!suppressEvents)
             {
-                CollidableA.EventTriggerer.OnContactRemoved(CollidableB, this, contact);
-                CollidableB.EventTriggerer.OnContactRemoved(CollidableA, this, contact);
+                CollidableA.EventTriggerer?.OnContactRemoved(CollidableB, this, contact);
+                CollidableB.EventTriggerer?.OnContactRemoved(CollidableA, this, contact);
             }
             if (Parent != null)
                 Parent.OnContactRemoved(contact);
@@ -173,8 +173,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //If the contact manifold had any contacts in it on cleanup, then we still need to fire the 'ending' event.
             if (previousContactCount > 0 && !suppressEvents)
             {
-                CollidableA.EventTriggerer.OnCollisionEnded(CollidableB, this);
-                CollidableB.EventTriggerer.OnCollisionEnded(CollidableA, this);
+                CollidableA.EventTriggerer?.OnCollisionEnded(CollidableB, this);
+                CollidableB.EventTriggerer?.OnCollisionEnded(CollidableA, this);
             }
 
             //Remove this pair from each collidable.  This can be done safely because the CleanUp is called sequentially.
@@ -189,8 +189,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Notify the colliders that the pair went away.
             if (!suppressEvents)
             {
-                CollidableA.EventTriggerer.OnPairRemoved(CollidableB);
-                CollidableB.EventTriggerer.OnPairRemoved(CollidableA);
+                CollidableA.EventTriggerer?.OnPairRemoved(CollidableB);
+                CollidableB.EventTriggerer?.OnPairRemoved(CollidableA);
             }
 
 

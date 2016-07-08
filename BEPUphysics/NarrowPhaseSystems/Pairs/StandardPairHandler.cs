@@ -138,6 +138,11 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             var triggerA = a.EventTriggerer;
             var triggerB = b.EventTriggerer;
 
+            if (triggerA == null || triggerB == null)
+            {
+                suppressEvents = true;
+            }
+
             if (!suppressEvents)
             {
                 triggerA.OnPairUpdated(b, this);

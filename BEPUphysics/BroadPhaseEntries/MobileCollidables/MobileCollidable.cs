@@ -6,6 +6,17 @@
     ///</summary>
     public abstract class MobileCollidable : Collidable
     {
+        public MobileCollidable()
+        {
+
+        }
+
+        public MobileCollidable(bool b)
+            : base (b)
+        {
+
+        }
+
         //TODO: Imagine needing to calculate the bounding box for a data structure that is not axis-aligned.  Being able to return BB without 'setting' would be helpful.
         //Possibly require second method.  The parameterless one uses 'self data' to do the calculation, as a sort of convenience.  The parameterful would return without setting.
         ///<summary>
