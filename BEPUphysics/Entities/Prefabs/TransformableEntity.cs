@@ -46,7 +46,7 @@ namespace BEPUphysics.Entities.Prefabs
         {
         }
 
-        private TransformableEntity(ConvexShape shape, Matrix3x3 transform, float mass)
+        private TransformableEntity(ConvexShape shape, Matrix3x3 transform, double mass)
             : base(new ConvexCollidable<TransformableShape>(new TransformableShape(shape, transform)), mass)
         {
         }
@@ -60,7 +60,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="shape">Shape to transform.</param>
         /// <param name="transform">Transform to apply to the shape.</param>
         /// <param name="mass">Mass of the object.</param>
-        public TransformableEntity(Vector3 position, ConvexShape shape, Matrix3x3 transform, float mass)
+        public TransformableEntity(Vector3 position, ConvexShape shape, Matrix3x3 transform, double mass)
             : this(shape, transform, mass)
         {
             Position = position;
@@ -87,7 +87,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="shape">Shape to transform.</param>
         /// <param name="transform">Transform to apply to the shape.</param>
         /// <param name="mass">Mass of the object.</param>
-        public TransformableEntity(MotionState motionState, ConvexShape shape, Matrix3x3 transform, float mass)
+        public TransformableEntity(MotionState motionState, ConvexShape shape, Matrix3x3 transform, double mass)
             : this(shape, transform, mass)
         {
             MotionState = motionState;

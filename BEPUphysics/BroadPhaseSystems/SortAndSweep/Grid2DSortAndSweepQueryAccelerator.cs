@@ -32,25 +32,25 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             throw new NotSupportedException("The Grid2DSortAndSweep broad phase cannot accelerate infinite ray casts.  Consider using a broad phase which supports infinite tests, using a custom solution, or using a finite ray.");
         }
 
-        public bool RayCast(Ray ray, float maximumLength, IList<BroadPhaseEntry> outputIntersections)
+        public bool RayCast(Ray ray, double maximumLength, IList<BroadPhaseEntry> outputIntersections)
         {
-            if (maximumLength == float.MaxValue) 
+            if (maximumLength == double.MaxValue) 
                 throw new NotSupportedException("The Grid2DSortAndSweep broad phase cannot accelerate infinite ray casts.  Consider specifying a maximum length or using a broad phase which supports infinite ray casts.");
         
             //Use 2d line rasterization.
             //Compute the exit location in the cell.
             //Test against each bounding box up until the exit value is reached.
-            float length = 0;
+            double length = 0;
             Int2 cellIndex;
             Vector3 currentPosition = ray.Position;
             Grid2DSortAndSweep.ComputeCell(ref currentPosition, out cellIndex);
             while (true)
             {
 
-                float cellWidth = 1 / Grid2DSortAndSweep.cellSizeInverse;
-                float nextT; //Distance along ray to next boundary.
-                float nextTy; //Distance along ray to next boundary along y axis.
-                float nextTz; //Distance along ray to next boundary along z axis.
+                double cellWidth = 1 / Grid2DSortAndSweep.cellSizeInverse;
+                double nextT; //Distance along ray to next boundary.
+                double nextTy; //Distance along ray to next boundary along y axis.
+                double nextTz; //Distance along ray to next boundary along z axis.
                 //Find the next cell.
                 if (ray.Direction.Y > 0)
                     nextTy = ((cellIndex.Y + 1) * cellWidth - currentPosition.Y) / ray.Direction.Y;
@@ -75,7 +75,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                 GridCell2D cell;
                 if (owner.cellSet.TryGetCell(ref cellIndex, out cell))
                 {
-                    float endingX;
+                    double endingX;
                     if(ray.Direction.X < 0)
                         endingX = currentPosition.X;
                     else
@@ -88,7 +88,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                         && cell.entries.Elements[i].item.boundingBox.Min.X <= endingX; i++) //TODO: Try additional x axis pruning?
                     {
                         var item = cell.entries.Elements[i].item;
-                        float t;
+                        double t;
                         if (ray.Intersects(ref item.boundingBox, out t) && t < maximumLength && !outputIntersections.Contains(item))
                         {
                             outputIntersections.Add(item);

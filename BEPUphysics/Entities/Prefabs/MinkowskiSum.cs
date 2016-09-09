@@ -22,7 +22,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// </summary>
         public Entity EntityB;
 
-        private MinkowskiSum(OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, float m)
+        private MinkowskiSum(OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, double m)
             :base(new ConvexCollidable<MinkowskiSumShape>(new MinkowskiSumShape(a, b)), m)
         {
             Position = -CollisionInformation.Shape.LocalOffset;
@@ -41,7 +41,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="a">First entity in the sum.</param>
         /// <param name="b">Second entity in the sum.</param>
         /// <param name="mass">Mass of the object.</param>
-        public MinkowskiSum(Vector3 position, OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, float mass)
+        public MinkowskiSum(Vector3 position, OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, double mass)
             : this(a, b, mass)
         {
             Position = position;
@@ -66,7 +66,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="a">First entity in the sum.</param>
         /// <param name="b">Second entity in the sum.</param>
         /// <param name="mass">Mass of the object.</param>
-        public MinkowskiSum(MotionState motionState, OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, float mass)
+        public MinkowskiSum(MotionState motionState, OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, double mass)
             : this(a, b, mass)
         {
             MotionState = motionState;
@@ -90,7 +90,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="motionState">Motion state specifying the entity's initial state.</param>
         /// <param name="shapes">List of shapes to make the sum frmo.</param>
         /// <param name="mass">Mass of the object.</param>
-        public MinkowskiSum(MotionState motionState, IList<OrientedConvexShapeEntry> shapes, float mass)
+        public MinkowskiSum(MotionState motionState, IList<OrientedConvexShapeEntry> shapes, double mass)
             : base(new ConvexCollidable<MinkowskiSumShape>(new MinkowskiSumShape(shapes)), mass)
         {
             MotionState = motionState;

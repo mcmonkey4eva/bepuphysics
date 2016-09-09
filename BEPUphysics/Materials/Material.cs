@@ -7,12 +7,12 @@ namespace BEPUphysics.Materials
     ///</summary>
     public class Material
     {
-        internal float kineticFriction = MaterialManager.DefaultKineticFriction;
+        internal double kineticFriction = MaterialManager.DefaultKineticFriction;
         ///<summary>
         /// Gets or sets the friction coefficient used when the object is sliding quickly and
         /// no special material relationship is defined between the colliding objects.
         ///</summary>
-        public float KineticFriction
+        public double KineticFriction
         {
             get
             {
@@ -26,12 +26,12 @@ namespace BEPUphysics.Materials
             }
         }
 
-        internal float staticFriction = MaterialManager.DefaultStaticFriction;
+        internal double staticFriction = MaterialManager.DefaultStaticFriction;
         ///<summary>
         /// Gets or sets the friction coefficient used when the object is sliding slowly and
         /// no special material relationship is defined between the colliding objects.
         ///</summary>
-        public float StaticFriction
+        public double StaticFriction
         {
             get
             {
@@ -46,12 +46,12 @@ namespace BEPUphysics.Materials
         }
 
 
-        internal float bounciness = MaterialManager.DefaultBounciness;
+        internal double bounciness = MaterialManager.DefaultBounciness;
         ///<summary>
         /// Gets or sets the coefficient of restitution between the objects when
         /// no special material relationship is defined between the colliding objects.
         ///</summary>
-        public float Bounciness
+        public double Bounciness
         {
             get
             {
@@ -84,7 +84,7 @@ namespace BEPUphysics.Materials
         ///<param name="staticFriction">Static friction to use.</param>
         ///<param name="kineticFriction">Kinetic friction to use.</param>
         ///<param name="bounciness">Bounciness to use.</param>
-        public Material(float staticFriction, float kineticFriction, float bounciness)
+        public Material(double staticFriction, double kineticFriction, double bounciness)
             : this()
         {
             this.staticFriction = staticFriction;

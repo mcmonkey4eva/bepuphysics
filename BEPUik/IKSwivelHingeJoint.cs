@@ -71,10 +71,10 @@ namespace BEPUik
             Vector3 restrictedAxis;
             Vector3.Cross(ref worldHingeAxis, ref worldTwistAxis, out restrictedAxis);
             //Attempt to normalize the restricted axis.
-            float lengthSquared = restrictedAxis.LengthSquared();
+            double lengthSquared = restrictedAxis.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
-                Vector3.Divide(ref restrictedAxis, (float)Math.Sqrt(lengthSquared), out restrictedAxis);
+                Vector3.Divide(ref restrictedAxis, (double)Math.Sqrt(lengthSquared), out restrictedAxis);
             }
             else
             {
@@ -90,9 +90,9 @@ namespace BEPUik
               };
             Matrix3x3.Negate(ref angularJacobianA, out angularJacobianB);
 
-            float error;
+            double error;
             Vector3.Dot(ref worldHingeAxis, ref worldTwistAxis, out error);
-            error = (float)Math.Acos(MathHelper.Clamp(error, -1, 1)) - MathHelper.PiOver2;
+            error = (double)Math.Acos(MathHelper.Clamp(error, -1, 1)) - MathHelper.PiOver2;
 
             velocityBias = new Vector3(errorCorrectionFactor * error, 0, 0);
 

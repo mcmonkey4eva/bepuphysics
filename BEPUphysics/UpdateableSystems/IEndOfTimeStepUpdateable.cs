@@ -10,7 +10,7 @@
         /// Updates the object at the end of a time step.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
-        void Update(float dt);
+        void Update(double dt);
 
     }
 }

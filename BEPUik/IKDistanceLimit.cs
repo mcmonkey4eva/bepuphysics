@@ -35,21 +35,21 @@ namespace BEPUik
             set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
         }
 
-        private float minimumDistance;
+        private double minimumDistance;
         /// <summary>
         /// Gets or sets the minimum distance that the joint connections should be kept from each other.
         /// </summary>
-        public float MinimumDistance
+        public double MinimumDistance
         {
             get { return minimumDistance; }
             set { minimumDistance = Math.Max(0, value); }
         }
 
-         private float maximumDistance;
+         private double maximumDistance;
         /// <summary>
         /// Gets or sets the maximum distance that the joint connections should be kept from each other.
         /// </summary>
-        public float MaximumDistance
+        public double MaximumDistance
         {
             get { return maximumDistance; }
             set { maximumDistance = Math.Max(0, value); }
@@ -64,7 +64,7 @@ namespace BEPUik
         /// <param name="anchorB">Anchor point on the second bone in world space.</param>
         /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other.</param>
         /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other.</param>
-        public IKDistanceLimit(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB, float minimumDistance, float maximumDistance)
+        public IKDistanceLimit(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB, double minimumDistance, double maximumDistance)
             : base(connectionA, connectionB)
         {
             AnchorA = anchorA;
@@ -86,7 +86,7 @@ namespace BEPUik
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            float currentDistance = separation.Length();
+            double currentDistance = separation.Length();
 
             //Compute jacobians
             Vector3 linearA;

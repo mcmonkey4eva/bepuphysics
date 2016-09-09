@@ -20,6 +20,6 @@
         /// Updates the position state of the object.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
-        void PreUpdatePosition(float dt);
+        void PreUpdatePosition(double dt);
     }
 }

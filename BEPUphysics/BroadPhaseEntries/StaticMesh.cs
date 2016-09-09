@@ -176,7 +176,7 @@ namespace BEPUphysics.BroadPhaseEntries
         /// <param name="maximumLength">Maximum length, in units of the ray's direction's length, to test.</param>
         /// <param name="rayHit">Hit location of the ray on the entry, if any.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public override bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
+        public override bool RayCast(Ray ray, double maximumLength, out RayHit rayHit)
         {
             return mesh.RayCast(ray, maximumLength, sidedness, out rayHit);
         }
@@ -198,7 +198,7 @@ namespace BEPUphysics.BroadPhaseEntries
             var hitElements = CommonResources.GetIntList();
             if (Mesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
-                hit.T = float.MaxValue;
+                hit.T = double.MaxValue;
                 for (int i = 0; i < hitElements.Count; i++)
                 {
                     mesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
@@ -210,13 +210,13 @@ namespace BEPUphysics.BroadPhaseEntries
                     Vector3.Subtract(ref tri.vB, ref center, out tri.vB);
                     Vector3.Subtract(ref tri.vC, ref center, out tri.vC);
                     tri.MaximumRadius = tri.vA.LengthSquared();
-                    float radius = tri.vB.LengthSquared();
+                    double radius = tri.vB.LengthSquared();
                     if (tri.MaximumRadius < radius)
                         tri.MaximumRadius = radius;
                     radius = tri.vC.LengthSquared(); 
                     if (tri.MaximumRadius < radius)
                         tri.MaximumRadius = radius;
-                    tri.MaximumRadius = (float)Math.Sqrt(tri.MaximumRadius);
+                    tri.MaximumRadius = (double)Math.Sqrt(tri.MaximumRadius);
                     tri.collisionMargin = 0;
                     var triangleTransform = new RigidTransform {Orientation = Quaternion.Identity, Position = center};
                     RayHit tempHit;
@@ -228,7 +228,7 @@ namespace BEPUphysics.BroadPhaseEntries
                 tri.MaximumRadius = 0;
                 PhysicsThreadResources.GiveBack(tri);
                 CommonResources.GiveBack(hitElements);
-                return hit.T != float.MaxValue;
+                return hit.T != double.MaxValue;
             }
             PhysicsThreadResources.GiveBack(tri);
             CommonResources.GiveBack(hitElements);
@@ -243,7 +243,7 @@ namespace BEPUphysics.BroadPhaseEntries
         ///<param name="sidedness">Sidedness to use when raycasting.  Doesn't have to be the same as the mesh's own sidedness.</param>
         ///<param name="rayHit">Data about the ray's intersection with the mesh, if any.</param>
         ///<returns>Whether or not the ray hit the mesh.</returns>
-        public bool RayCast(Ray ray, float maximumLength, TriangleSidedness sidedness, out RayHit rayHit)
+        public bool RayCast(Ray ray, double maximumLength, TriangleSidedness sidedness, out RayHit rayHit)
         {
             return mesh.RayCast(ray, maximumLength, sidedness, out rayHit);
         }

@@ -26,7 +26,7 @@ namespace BEPUphysics.Constraints.Collision
         internal Vector2 accumulatedImpulse;
         internal Matrix2x3 angularA, angularB;
         private int contactCount;
-        private float friction;
+        private double friction;
         internal Matrix2x3 linearA;
         private Entity entityA, entityB;
         private bool entityADynamic, entityBDynamic;
@@ -92,7 +92,7 @@ namespace BEPUphysics.Constraints.Collision
 
                 //Re-using information version:
                 //TODO: va + wa x ra - vb - wb x rb, dotted against each axis, is it faster?
-                float dvx = 0, dvy = 0, dvz = 0;
+                double dvx = 0, dvy = 0, dvz = 0;
                 if (entityA != null)
                 {
                     dvx = entityA.linearVelocity.X + (entityA.angularVelocity.Y * ra.Z) - (entityA.angularVelocity.Z * ra.Y);
@@ -106,13 +106,13 @@ namespace BEPUphysics.Constraints.Collision
                     dvz += -entityB.linearVelocity.Z - (entityB.angularVelocity.X * rb.Y) + (entityB.angularVelocity.Y * rb.X);
                 }
 
-                //float dvx = entityA.linearVelocity.X + (entityA.angularVelocity.Y * ra.Z) - (entityA.angularVelocity.Z * ra.Y)
+                //double dvx = entityA.linearVelocity.X + (entityA.angularVelocity.Y * ra.Z) - (entityA.angularVelocity.Z * ra.Y)
                 //            - entityB.linearVelocity.X - (entityB.angularVelocity.Y * rb.Z) + (entityB.angularVelocity.Z * rb.Y);
 
-                //float dvy = entityA.linearVelocity.Y + (entityA.angularVelocity.Z * ra.X) - (entityA.angularVelocity.X * ra.Z)
+                //double dvy = entityA.linearVelocity.Y + (entityA.angularVelocity.Z * ra.X) - (entityA.angularVelocity.X * ra.Z)
                 //            - entityB.linearVelocity.Y - (entityB.angularVelocity.Z * rb.X) + (entityB.angularVelocity.X * rb.Z);
 
-                //float dvz = entityA.linearVelocity.Z + (entityA.angularVelocity.X * ra.Y) - (entityA.angularVelocity.Y * ra.X)
+                //double dvz = entityA.linearVelocity.Z + (entityA.angularVelocity.X * ra.Y) - (entityA.angularVelocity.Y * ra.X)
                 //            - entityB.linearVelocity.Z - (entityB.angularVelocity.X * rb.Y) + (entityB.angularVelocity.Y * rb.X);
 
 #if !WINDOWS
@@ -129,7 +129,7 @@ namespace BEPUphysics.Constraints.Collision
                 //Vector3.Cross(ref parentA.myInternalAngularVelocity, ref Ra, out wara);
                 //Vector3.Cross(ref parentB.myInternalAngularVelocity, ref Rb, out wbrb);
 
-                //float dvx, dvy, dvz;
+                //double dvx, dvy, dvz;
                 //dvx = wara.X + parentA.myInternalLinearVelocity.X - wbrb.X - parentB.myInternalLinearVelocity.X;
                 //dvy = wara.Y + parentA.myInternalLinearVelocity.Y - wbrb.Y - parentB.myInternalLinearVelocity.Y;
                 //dvz = wara.Z + parentA.myInternalLinearVelocity.Z - wbrb.Z - parentB.myInternalLinearVelocity.Z;
@@ -152,14 +152,14 @@ namespace BEPUphysics.Constraints.Collision
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
         /// </summary>
         /// <returns>The rough applied impulse magnitude.</returns>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
 
             Vector2 lambda = RelativeVelocity;
 
             //Convert to impulse
             //Matrix2x2.Transform(ref lambda, ref velocityToImpulse, out lambda);
-            float x = lambda.X;
+            double x = lambda.X;
             lambda.X = x * velocityToImpulse.M11 + lambda.Y * velocityToImpulse.M21;
             lambda.Y = x * velocityToImpulse.M12 + lambda.Y * velocityToImpulse.M22;
 
@@ -167,8 +167,8 @@ namespace BEPUphysics.Constraints.Collision
             Vector2 previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse.X += lambda.X;
             accumulatedImpulse.Y += lambda.Y;
-            float length = accumulatedImpulse.LengthSquared();
-            float maximumFrictionForce = 0;
+            double length = accumulatedImpulse.LengthSquared();
+            double maximumFrictionForce = 0;
             for (int i = 0; i < contactCount; i++)
             {
                 maximumFrictionForce += contactManifoldConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
@@ -176,20 +176,20 @@ namespace BEPUphysics.Constraints.Collision
             maximumFrictionForce *= friction;
             if (length > maximumFrictionForce * maximumFrictionForce)
             {
-                length = maximumFrictionForce / (float)Math.Sqrt(length);
+                length = maximumFrictionForce / (double)Math.Sqrt(length);
                 accumulatedImpulse.X *= length;
                 accumulatedImpulse.Y *= length;
             }
             lambda.X = accumulatedImpulse.X - previousAccumulatedImpulse.X;
             lambda.Y = accumulatedImpulse.Y - previousAccumulatedImpulse.Y;
             //Single Axis clamp
-            //float maximumFrictionForce = 0;
+            //double maximumFrictionForce = 0;
             //for (int i = 0; i < contactCount; i++)
             //{
             //    maximumFrictionForce += pair.contacts[i].penetrationConstraint.accumulatedImpulse;
             //}
             //maximumFrictionForce *= friction;
-            //float previousAccumulatedImpulse = accumulatedImpulse.X;
+            //double previousAccumulatedImpulse = accumulatedImpulse.X;
             //accumulatedImpulse.X = MathHelper.Clamp(accumulatedImpulse.X + lambda.X, -maximumFrictionForce, maximumFrictionForce);
             //lambda.X = accumulatedImpulse.X - previousAccumulatedImpulse;
             //previousAccumulatedImpulse = accumulatedImpulse.Y;
@@ -239,7 +239,7 @@ namespace BEPUphysics.Constraints.Collision
         /// Performs the frame's configuration step.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
 
             entityADynamic = entityA != null && entityA.isDynamic;
@@ -314,17 +314,17 @@ namespace BEPUphysics.Constraints.Collision
 
             //Get rid of the normal velocity.
             Vector3 normal = contactManifoldConstraint.penetrationConstraints.Elements[0].contact.Normal;
-            float normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y + normal.Z * relativeVelocity.Z;
+            double normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y + normal.Z * relativeVelocity.Z;
             relativeVelocity.X -= normalVelocityScalar * normal.X;
             relativeVelocity.Y -= normalVelocityScalar * normal.Y;
             relativeVelocity.Z -= normalVelocityScalar * normal.Z;
 
             //Create the jacobian entry and decide the friction coefficient.
-            float length = relativeVelocity.LengthSquared();
+            double length = relativeVelocity.LengthSquared();
             if (length > Toolbox.Epsilon)
             {
-                length = (float)Math.Sqrt(length);
-                float inverseLength = 1 / length;
+                length = (double)Math.Sqrt(length);
+                double inverseLength = 1 / length;
                 linearA.M11 = relativeVelocity.X * inverseLength;
                 linearA.M12 = relativeVelocity.Y * inverseLength;
                 linearA.M13 = relativeVelocity.Z * inverseLength;
@@ -349,8 +349,8 @@ namespace BEPUphysics.Constraints.Collision
                     length = axis1.LengthSquared();
                     if (length > Toolbox.Epsilon)
                     {
-                        length = (float)Math.Sqrt(length);
-                        float inverseLength = 1 / length;
+                        length = (double)Math.Sqrt(length);
+                        double inverseLength = 1 / length;
                         linearA.M11 = axis1.X * inverseLength;
                         linearA.M12 = axis1.Y * inverseLength;
                         linearA.M13 = axis1.Z * inverseLength;

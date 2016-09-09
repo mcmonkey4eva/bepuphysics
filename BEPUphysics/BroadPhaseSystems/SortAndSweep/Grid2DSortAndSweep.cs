@@ -21,7 +21,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         /// Gets or sets the width of cells in the 2D grid.  For sparser, larger scenes, increasing this can help performance.
         /// For denser scenes, decreasing this may help.
         /// </summary>
-        public static float CellSize
+        public static double CellSize
         {
             get
             {
@@ -33,7 +33,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             }
         }
         //TODO: Try different values for this.
-        internal static float cellSizeInverse = 1 / 8f; 
+        internal static double cellSizeInverse = 1 / 8f; 
 
         internal static void ComputeCell(ref Vector3 v, out Int2 cell)
         {

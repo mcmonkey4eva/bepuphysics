@@ -9,7 +9,7 @@
         /// Applies forces to the object.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
-        void UpdateForForces(float dt);
+        void UpdateForForces(double dt);
 
         ///<summary>
         /// Force updater that owns this object.

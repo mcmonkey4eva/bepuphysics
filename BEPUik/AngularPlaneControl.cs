@@ -32,7 +32,7 @@
             AngularMotor.Rigidity = 1;
         }
 
-        protected internal override void Preupdate(float dt, float updateRate)
+        protected internal override void Preupdate(double dt, double updateRate)
         {
             AngularMotor.Preupdate(dt, updateRate);
         }
@@ -62,7 +62,7 @@
             AngularMotor.ClearAccumulatedImpulses();
         }
 
-        public override float MaximumForce
+        public override double MaximumForce
         {
             get { return AngularMotor.MaximumForce; }
             set

@@ -114,7 +114,7 @@ namespace BEPUutilities
             else
                 clampedLocation.Z = boundingSphere.Center.Z;
 
-            float distanceSquared;
+            double distanceSquared;
             Vector3.DistanceSquared(ref clampedLocation, ref boundingSphere.Center, out distanceSquared);
             intersects = distanceSquared <= boundingSphere.Radius * boundingSphere.Radius;
 

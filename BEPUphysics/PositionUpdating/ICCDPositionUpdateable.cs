@@ -29,13 +29,13 @@
         /// Updates the time of impacts associated with the updateable.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
-        void UpdateTimesOfImpact(float dt);
+        void UpdateTimesOfImpact(double dt);
 
         /// <summary>
         /// Updates the updateable using its continuous nature.
         /// </summary>
         /// <param name="dt">Time step duration.</param>
-        void UpdatePositionContinuously(float dt);
+        void UpdatePositionContinuously(double dt);
 
         /// <summary>
         /// Gets or sets the position update mode of the object.

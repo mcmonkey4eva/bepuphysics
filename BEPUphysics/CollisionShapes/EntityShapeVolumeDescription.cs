@@ -9,6 +9,6 @@ namespace BEPUphysics.CollisionShapes
     public struct EntityShapeVolumeDescription
     {
         public Matrix3x3 VolumeDistribution;
-        public float Volume;
+        public double Volume;
     }
 }

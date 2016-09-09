@@ -106,7 +106,7 @@ namespace BEPUphysics.Paths
         /// </summary>
         /// <param name="time">Time to check for speed.</param>
         /// <returns>Speed at the given time.</returns>
-        public abstract float GetSpeedAtCurveTime(double time);
+        public abstract double GetSpeedAtCurveTime(double time);
 
         /// <summary>
         /// Gets the time at which the internal curve would be evaluated at the given time.
@@ -212,15 +212,15 @@ namespace BEPUphysics.Paths
             if (minIndex < 0 || maxIndex < 0)
                 return;
 
-            float timeElapsed = 0;
+            double timeElapsed = 0;
             //TODO: useless calculation due to this
             TValue currentValue = Curve.ControlPoints[minIndex].Value;
             TValue previousValue = currentValue;
 
-            float inverseSampleCount = 1f / (SamplesPerInterval + 1);
+            double inverseSampleCount = 1f / (SamplesPerInterval + 1);
 
-            float speed = GetSpeedAtCurveTime(Curve.ControlPoints[minIndex].Time);
-            float previousSpeed = speed;
+            double speed = GetSpeedAtCurveTime(Curve.ControlPoints[minIndex].Time);
+            double previousSpeed = speed;
             for (int i = minIndex; i < maxIndex; i++)
             {
                 previousValue = currentValue;
@@ -261,6 +261,6 @@ namespace BEPUphysics.Paths
         /// <param name="start">Starting value.</param>
         /// <param name="end">Ending value.</param>
         /// <returns>Distance between the values.</returns>
-        protected abstract float GetDistance(TValue start, TValue end);
+        protected abstract double GetDistance(TValue start, TValue end);
     }
 }

@@ -32,7 +32,7 @@
             LinearMotor.Rigidity = 1;
         }
 
-        protected internal override void Preupdate(float dt, float updateRate)
+        protected internal override void Preupdate(double dt, double updateRate)
         {
             LinearMotor.Preupdate(dt, updateRate);
         }
@@ -62,7 +62,7 @@
             LinearMotor.ClearAccumulatedImpulses();
         }
 
-        public override float MaximumForce
+        public override double MaximumForce
         {
             get { return LinearMotor.MaximumForce; }
             set

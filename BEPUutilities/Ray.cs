@@ -36,9 +36,9 @@ namespace BEPUutilities
         /// <param name="boundingBox">Bounding box to test against.</param>
         /// <param name="t">The length along the ray to the impact, if any impact occurs.</param>
         /// <returns>True if the ray intersects the target, false otherwise.</returns>
-        public bool Intersects(ref BoundingBox boundingBox, out float t)
+        public bool Intersects(ref BoundingBox boundingBox, out double t)
         {
-            float tmin = 0, tmax = float.MaxValue;
+            double tmin = 0, tmax = double.MaxValue;
             if (Math.Abs(Direction.X) < Toolbox.Epsilon)
             {
                 if (Position.X < boundingBox.Min.X || Position.X > boundingBox.Max.X)
@@ -56,7 +56,7 @@ namespace BEPUutilities
                 var t2 = (boundingBox.Max.X - Position.X) * inverseDirection;
                 if (t1 > t2)
                 {
-                    float temp = t1;
+                    double temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
@@ -85,7 +85,7 @@ namespace BEPUutilities
                 var t2 = (boundingBox.Max.Y - Position.Y) * inverseDirection;
                 if (t1 > t2)
                 {
-                    float temp = t1;
+                    double temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
@@ -114,7 +114,7 @@ namespace BEPUutilities
                 var t2 = (boundingBox.Max.Z - Position.Z) * inverseDirection;
                 if (t1 > t2)
                 {
-                    float temp = t1;
+                    double temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
@@ -136,7 +136,7 @@ namespace BEPUutilities
         /// <param name="boundingBox">Bounding box to test against.</param>
         /// <param name="t">The length along the ray to the impact, if any impact occurs.</param>
         /// <returns>True if the ray intersects the target, false otherwise.</returns>
-        public bool Intersects(BoundingBox boundingBox, out float t)
+        public bool Intersects(BoundingBox boundingBox, out double t)
         {
             return Intersects(ref boundingBox, out t);
         }
@@ -147,16 +147,16 @@ namespace BEPUutilities
         /// <param name="plane">Plane to test against.</param>
         /// <param name="t">The length along the ray to the impact, if any impact occurs.</param>
         /// <returns>True if the ray intersects the target, false otherwise.</returns>
-        public bool Intersects(ref Plane plane, out float t)
+        public bool Intersects(ref Plane plane, out double t)
         {
-            float velocity;
+            double velocity;
             Vector3.Dot(ref Direction, ref plane.Normal, out velocity);
             if (Math.Abs(velocity) < Toolbox.Epsilon)
             {
                 t = 0;
                 return false;
             }
-            float distanceAlongNormal;
+            double distanceAlongNormal;
             Vector3.Dot(ref Position, ref plane.Normal, out distanceAlongNormal);
             distanceAlongNormal += plane.D;
             t = -distanceAlongNormal / velocity;
@@ -169,7 +169,7 @@ namespace BEPUutilities
         /// <param name="plane">Plane to test against.</param>
         /// <param name="t">The length along the ray to the impact, if any impact occurs.</param>
         /// <returns>True if the ray intersects the target, false otherwise.</returns>
-        public bool Intersects(Plane plane, out float t)
+        public bool Intersects(Plane plane, out double t)
         {
             return Intersects(ref plane, out t);
         }
@@ -179,7 +179,7 @@ namespace BEPUutilities
         /// </summary>
         /// <param name="t">Length along the ray from the ray position in terms of the ray's direction.</param>
         /// <param name="v">Point along the ray at the given location.</param>
-        public void GetPointOnRay(float t, out Vector3 v)
+        public void GetPointOnRay(double t, out Vector3 v)
         {
             Vector3.Multiply(ref Direction, t, out v);
             Vector3.Add(ref v, ref Position, out v);

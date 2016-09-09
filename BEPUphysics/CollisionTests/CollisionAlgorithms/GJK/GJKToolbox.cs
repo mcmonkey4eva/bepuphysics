@@ -73,7 +73,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref direction, ref localtransformB, out extremePoint);
                 //Since this is a boolean test, we don't need to refine the simplex if it becomes apparent that we cannot reach the origin.
                 //If the most extreme point at any given time does not go past the origin, then we can quit immediately.
-                float dot;
+                double dot;
                 Vector3.Dot(ref extremePoint, ref closestPoint, out dot); //extreme point dotted against the direction pointing backwards towards the CSO. 
                 if (dot > 0)
                 {
@@ -192,7 +192,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         ///<param name="maximumLength">Maximum length of the ray in units of the ray direction's length.</param>
         ///<param name="hit">Hit data of the ray cast, if any.</param>
         ///<returns>Whether or not the ray hit the shape.</returns>
-        public static bool RayCast(Ray ray, ConvexShape shape, ref RigidTransform shapeTransform, float maximumLength,
+        public static bool RayCast(Ray ray, ConvexShape shape, ref RigidTransform shapeTransform, double maximumLength,
                                    out RayHit hit)
         {
             //Transform the ray into the object's local space.
@@ -210,7 +210,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             RaySimplex simplex = new RaySimplex();
 
-            float vw, closestPointDotDirection;
+            double vw, closestPointDotDirection;
             int count = 0;
             //This epsilon has a significant impact on performance and accuracy.  Changing it to use BigEpsilon instead increases speed by around 30-40% usually, but jigging is more evident.
             while (closestOffset.LengthSquared() >= Toolbox.Epsilon * simplex.GetErrorTolerance(ref ray.Position))
@@ -318,7 +318,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             RaySimplex simplex = new RaySimplex();
 
  
-            float vw, vdir;
+            double vw, vdir;
             int count = 0;
             do
             {
@@ -384,7 +384,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         ///<param name="maximumLength">Maximum length of the ray in units of the ray direction's length.</param>
         ///<param name="hit">Hit data of the sphere cast, if any.</param>
         ///<returns>Whether or not the sphere cast hit the shape.</returns>
-        public static bool SphereCast(Ray ray, float radius, ConvexShape shape, ref RigidTransform shapeTransform, float maximumLength,
+        public static bool SphereCast(Ray ray, double radius, ConvexShape shape, ref RigidTransform shapeTransform, double maximumLength,
                                    out RayHit hit)
         {
             //Transform the ray into the object's local space.
@@ -402,7 +402,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             RaySimplex simplex = new RaySimplex();
 
-            float vw, vdir;
+            double vw, vdir;
             int count = 0;
 
             //This epsilon has a significant impact on performance and accuracy.  Changing it to use BigEpsilon instead increases speed by around 30-40% usually, but jigging is more evident.
@@ -467,7 +467,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         ///<param name="maximumLength">Maximum length of the ray in units of the ray direction's length.</param>
         ///<param name="hit">Hit data of the sphere cast, if any.</param>
         ///<returns>Whether or not the sphere cast hit the shape.</returns>
-        public static bool CCDSphereCast(Ray ray, float radius, ConvexShape target, ref RigidTransform shapeTransform, float maximumLength,
+        public static bool CCDSphereCast(Ray ray, double radius, ConvexShape target, ref RigidTransform shapeTransform, double maximumLength,
                                    out RayHit hit)
         {
             int iterations = 0;

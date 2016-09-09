@@ -11,11 +11,11 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
     public class ConeShape : ConvexShape
     {
 
-        float height;
+        double height;
         ///<summary>
         /// Gets or sets the height of the cone.
         ///</summary>
-        public float Height
+        public double Height
         {
             get { return height; }
             set
@@ -25,11 +25,11 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             }
         }
 
-        float radius;
+        double radius;
         ///<summary>
         /// Gets or sets the radius of the cone base.
         ///</summary>
-        public float Radius
+        public double Radius
         {
             get { return radius; }
             set
@@ -44,7 +44,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         ///</summary>
         ///<param name="height">Height of the cone.</param>
         ///<param name="radius">Radius of the cone base.</param>
-        public ConeShape(float height, float radius)
+        public ConeShape(double height, double radius)
         {
             this.height = height;
             this.radius = radius;
@@ -58,7 +58,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="height">Height of the cone.</param>
         ///<param name="radius">Radius of the cone base.</param>
         /// <param name="description">Cached information about the shape. Assumed to be correct; no extra processing or validation is performed.</param>
-        public ConeShape(float height, float radius, ConvexShapeDescription description)
+        public ConeShape(double height, double radius, ConvexShapeDescription description)
         {
             this.height = height;
             this.radius = radius;
@@ -81,22 +81,22 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="radius">Radius of the cone base.</param>
         ///<param name="collisionMargin">Collision margin of the shape.</param>
         /// <returns>Description required to define a convex shape.</returns>
-        public static ConvexShapeDescription ComputeDescription(float height, float radius, float collisionMargin)
+        public static ConvexShapeDescription ComputeDescription(double height, double radius, double collisionMargin)
         {
             ConvexShapeDescription description;
-            description.EntityShapeVolume.Volume = (float)(.333333 * Math.PI * radius * radius * height);
+            description.EntityShapeVolume.Volume = (double)(.333333 * Math.PI * radius * radius * height);
 
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            float diagValue = (.1f * height * height + .15f * radius * radius);
+            double diagValue = (.1f * height * height + .15f * radius * radius);
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = .3f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;
 
-            description.MaximumRadius = (float)(collisionMargin + Math.Max(.75 * height, Math.Sqrt(.0625f * height * height + radius * radius)));
+            description.MaximumRadius = (double)(collisionMargin + Math.Max(.75 * height, Math.Sqrt(.0625f * height * height + radius * radius)));
 
             double denominator = radius / height;
             denominator = denominator / Math.Sqrt(denominator * denominator + 1);
-            description.MinimumRadius = (float)(collisionMargin + Math.Min(.25f * height, denominator * .75 * height));
+            description.MinimumRadius = (double)(collisionMargin + Math.Min(.25f * height, denominator * .75 * height));
 
             description.CollisionMargin = collisionMargin;
             return description;
@@ -111,7 +111,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
             //Is it the tip of the cone?
-            float sinThetaSquared = radius * radius / (radius * radius + height * height);
+            double sinThetaSquared = radius * radius / (radius * radius + height * height);
             //If d.Y * d.Y / d.LengthSquared >= sinthetaSquared
             if (direction.Y > 0 && direction.Y * direction.Y >= direction.LengthSquared() * sinThetaSquared)
             {
@@ -119,11 +119,11 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
                 return;
             }
             //Is it a bottom edge of the cone?
-            float horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
+            double horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
             if (horizontalLengthSquared > Toolbox.Epsilon)
             {
                 var radOverSigma = radius / Math.Sqrt(horizontalLengthSquared);
-                extremePoint = new Vector3((float)(radOverSigma * direction.X), -.25f * height, (float)(radOverSigma * direction.Z));
+                extremePoint = new Vector3((double)(radOverSigma * direction.X), -.25f * height, (double)(radOverSigma * direction.Z));
             }
             else // It's pointing almost straight down...
                 extremePoint = new Vector3(0, -.25f * height, 0);

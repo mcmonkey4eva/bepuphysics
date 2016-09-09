@@ -114,7 +114,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         ///<param name="requester">Collidable requesting the update.</param>
         ///<param name="dt">Timestep duration.</param>
-        public override void UpdateTimeOfImpact(Collidable requester, float dt)
+        public override void UpdateTimeOfImpact(Collidable requester, double dt)
         {
             //Notice that we don't test for convex entity null explicitly.  The convex.IsActive property does that for us.
             if (convex.IsActive && convex.entity.PositionUpdateMode == PositionUpdateMode.Continuous)
@@ -125,7 +125,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                 //Only perform the test if the minimum radii are small enough relative to the size of the velocity.
                 Vector3 velocity;
                 Vector3.Multiply(ref convex.entity.linearVelocity, dt, out velocity);
-                float velocitySquared = velocity.LengthSquared();
+                double velocitySquared = velocity.LengthSquared();
 
                 var minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
@@ -153,7 +153,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                             Vector3.Subtract(ref triangle.vC, ref triangle.vA, out AC);
                             Vector3 normal;
                             Vector3.Cross(ref AC, ref AB, out normal);
-                            float dot;
+                            double dot;
                             Vector3.Dot(ref normal, ref terrainUp, out dot);
                             if (dot < 0)
                                 Vector3.Dot(ref normal, ref rayHit.Normal, out dot);

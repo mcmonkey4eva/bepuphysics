@@ -36,12 +36,12 @@ namespace BEPUik
         /// </summary>
         public bool UseAutomass { get; set; }
 
-        private float automassUnstressedFalloff = 0.9f;
+        private double automassUnstressedFalloff = 0.9f;
         /// <summary>
         /// Gets or sets the multiplier applied to the mass of a bone before distributing it to the child bones.
         /// Used only when UseAutomass is set to true.
         /// </summary>
-        public float AutomassUnstressedFalloff
+        public double AutomassUnstressedFalloff
         {
             get { return automassUnstressedFalloff; }
             set
@@ -50,11 +50,11 @@ namespace BEPUik
             }
         }
 
-        private float automassTarget = 1;
+        private double automassTarget = 1;
         /// <summary>
         /// Gets or sets the mass that the heaviest bones will have when automass is enabled.
         /// </summary>
-        public float AutomassTarget
+        public double AutomassTarget
         {
             get { return automassTarget; }
             set
@@ -250,7 +250,7 @@ namespace BEPUik
             //We distribute a portion of the current bone's total mass to the child bones.
             //By applying a multiplier automassUnstressedFalloff, we guarantee that a chain has a certain maximum weight (excluding cycles).
             //This is thanks to the convergent geometric series sum(automassUnstressedFalloff^n, 1, infinity).
-            float massPerChild = uniqueChildren.Count > 0 ? automassUnstressedFalloff * bone.Mass / uniqueChildren.Count : 0;
+            double massPerChild = uniqueChildren.Count > 0 ? automassUnstressedFalloff * bone.Mass / uniqueChildren.Count : 0;
 
             uniqueChildren.Clear();
             //(If the number of children is 0, then the only bones which can exist are either bones which were already traversed and will be skipped
@@ -362,14 +362,14 @@ namespace BEPUik
             }
 
             //Normalize the masses of objects so that the heaviest bones have AutomassTarget mass.
-            float lowestInverseMass = float.MaxValue;
+            double lowestInverseMass = double.MaxValue;
             foreach (var bone in bones)
             {
                 if (bone.inverseMass < lowestInverseMass)
                     lowestInverseMass = bone.inverseMass;
             }
 
-            float inverseMassScale = 1 / (AutomassTarget * lowestInverseMass);
+            double inverseMassScale = 1 / (AutomassTarget * lowestInverseMass);
 
             foreach (var bone in bones)
             {

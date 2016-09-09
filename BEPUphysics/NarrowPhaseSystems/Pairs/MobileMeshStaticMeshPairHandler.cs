@@ -51,7 +51,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             return toReturn;
         }
 
-        protected override void ConfigureCollidable(TriangleEntry entry, float dt)
+        protected override void ConfigureCollidable(TriangleEntry entry, double dt)
         {
 
         }
@@ -97,7 +97,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
 
 
-        protected override void UpdateContainedPairs(float dt)
+        protected override void UpdateContainedPairs(double dt)
         {
             var overlappedElements = CommonResources.GetIntList();
             mesh.Mesh.Tree.GetOverlaps(mobileMesh.boundingBox, overlappedElements);

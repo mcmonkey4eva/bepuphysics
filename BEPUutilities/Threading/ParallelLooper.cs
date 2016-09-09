@@ -127,7 +127,7 @@ namespace BEPUutilities.Threading
             currentLoopBody = loopBody;
             iterationsPerSteal = Math.Max(1, iterationCount / taskSubdivisions);
             jobIndex = 0;
-            float maxJobs = iterationCount / (float) iterationsPerSteal;
+            double maxJobs = iterationCount / (double) iterationsPerSteal;
             if (maxJobs % 1 == 0)
                 maxJobIndex = (int) maxJobs;
             else

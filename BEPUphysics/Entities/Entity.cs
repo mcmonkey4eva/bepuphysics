@@ -40,7 +40,7 @@ namespace BEPUphysics.Entities
         ///</summary>
         ///<param name="collisionInformation">Collidable for the entity.</param>
         /// <param name="mass">Mass of the entity.</param>
-        public Entity(T collisionInformation, float mass)
+        public Entity(T collisionInformation, double mass)
         {
             Initialize(collisionInformation, mass);
         }
@@ -50,7 +50,7 @@ namespace BEPUphysics.Entities
         ///<param name="collisionInformation">Collidable for the entity.</param>
         /// <param name="mass">Mass of the entity.</param>
         /// <param name="inertiaTensor">Inertia of the entity.</param>
-        public Entity(T collisionInformation, float mass, Matrix3x3 inertiaTensor)
+        public Entity(T collisionInformation, double mass, Matrix3x3 inertiaTensor)
         {
             Initialize(collisionInformation, mass, inertiaTensor);
         }

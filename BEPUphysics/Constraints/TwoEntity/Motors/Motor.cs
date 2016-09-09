@@ -5,29 +5,29 @@
     /// </summary>
     public abstract class Motor : TwoEntityConstraint
     {
-        protected float maxForceDt = float.MaxValue;
-        protected float maxForceDtSquared = float.MaxValue;
+        protected double maxForceDt = double.MaxValue;
+        protected double maxForceDtSquared = double.MaxValue;
 
         /// <summary>
         /// Softness divided by the timestep to maintain timestep independence.
         /// </summary>
-        internal float usedSoftness;
+        internal double usedSoftness;
 
         /// <summary>
         /// Computes the maxForceDt and maxForceDtSquared fields.
         /// </summary>
-        protected void ComputeMaxForces(float maxForce, float dt)
+        protected void ComputeMaxForces(double maxForce, double dt)
         {
             //Determine maximum force
-            if (maxForce < float.MaxValue)
+            if (maxForce < double.MaxValue)
             {
                 maxForceDt = maxForce * dt;
                 maxForceDtSquared = maxForceDt * maxForceDt;
             }
             else
             {
-                maxForceDt = float.MaxValue;
-                maxForceDtSquared = float.MaxValue;
+                maxForceDt = double.MaxValue;
+                maxForceDtSquared = double.MaxValue;
             }
         }
     }

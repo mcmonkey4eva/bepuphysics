@@ -10,16 +10,16 @@ namespace BEPUphysics.Constraints.SingleEntity
     /// </summary>
     public class MaximumLinearSpeedConstraint : SingleEntityConstraint, I3DImpulseConstraint
     {
-        private float effectiveMassMatrix;
-        private float maxForceDt = float.MaxValue;
-        private float maxForceDtSquared = float.MaxValue;
+        private double effectiveMassMatrix;
+        private double maxForceDt = double.MaxValue;
+        private double maxForceDtSquared = double.MaxValue;
         private Vector3 accumulatedImpulse;
-        private float maximumForce = float.MaxValue;
-        private float maximumSpeed;
-        private float maximumSpeedSquared;
+        private double maximumForce = double.MaxValue;
+        private double maximumSpeed;
+        private double maximumSpeedSquared;
 
-        private float softness = .00001f;
-        private float usedSoftness;
+        private double softness = .00001f;
+        private double usedSoftness;
 
         /// <summary>
         /// Constructs a maximum speed constraint.
@@ -36,7 +36,7 @@ namespace BEPUphysics.Constraints.SingleEntity
         /// </summary>
         /// <param name="e">Affected entity.</param>
         /// <param name="maxSpeed">Maximum linear speed allowed.</param>
-        public MaximumLinearSpeedConstraint(Entity e, float maxSpeed)
+        public MaximumLinearSpeedConstraint(Entity e, double maxSpeed)
         {
             Entity = e;
             MaximumSpeed = maxSpeed;
@@ -46,7 +46,7 @@ namespace BEPUphysics.Constraints.SingleEntity
         /// Gets and sets the maximum impulse that the constraint will attempt to apply when satisfying its requirements.
         /// This field can be used to simulate friction in a constraint.
         /// </summary>
-        public float MaximumForce
+        public double MaximumForce
         {
             get
             {
@@ -62,7 +62,7 @@ namespace BEPUphysics.Constraints.SingleEntity
         /// <summary>
         /// Gets or sets the maximum linear speed that this constraint allows.
         /// </summary>
-        public float MaximumSpeed
+        public double MaximumSpeed
         {
             get { return maximumSpeed; }
             set
@@ -79,7 +79,7 @@ namespace BEPUphysics.Constraints.SingleEntity
         /// Sometimes, if a joint system is unstable, increasing the softness of the involved constraints will make it settle down.
         /// For motors, softness can be used to implement damping.  For a damping constant k, the appropriate softness is 1/k.
         /// </summary>
-        public float Softness
+        public double Softness
         {
             get { return softness; }
             set { softness = Math.Max(0, value); }
@@ -111,12 +111,12 @@ namespace BEPUphysics.Constraints.SingleEntity
         /// Calculates and applies corrective impulses.
         /// Called automatically by space.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
-            float linearSpeed = entity.linearVelocity.LengthSquared();
+            double linearSpeed = entity.linearVelocity.LengthSquared();
             if (linearSpeed > maximumSpeedSquared)
             {
-                linearSpeed = (float) Math.Sqrt(linearSpeed);
+                linearSpeed = (double) Math.Sqrt(linearSpeed);
                 Vector3 impulse;
                 //divide by linearSpeed to normalize the velocity.
                 //Multiply by linearSpeed - maximumSpeed to get the 'velocity change vector.'
@@ -134,11 +134,11 @@ namespace BEPUphysics.Constraints.SingleEntity
                 //Accumulate
                 Vector3 previousAccumulatedImpulse = accumulatedImpulse;
                 Vector3.Add(ref accumulatedImpulse, ref impulse, out accumulatedImpulse);
-                float forceMagnitude = accumulatedImpulse.LengthSquared();
+                double forceMagnitude = accumulatedImpulse.LengthSquared();
                 if (forceMagnitude > maxForceDtSquared)
                 {
                     //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                    float multiplier = maxForceDt / (float) Math.Sqrt(forceMagnitude);
+                    double multiplier = maxForceDt / (double) Math.Sqrt(forceMagnitude);
                     accumulatedImpulse.X *= multiplier;
                     accumulatedImpulse.Y *= multiplier;
                     accumulatedImpulse.Z *= multiplier;
@@ -164,22 +164,22 @@ namespace BEPUphysics.Constraints.SingleEntity
         /// Called automatically by space.
         /// </summary>
         /// <param name="dt">Time in seconds since the last update.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             usedSoftness = softness / dt;
 
             effectiveMassMatrix = 1 / (entity.inverseMass + usedSoftness);
 
             //Determine maximum force
-            if (maximumForce < float.MaxValue)
+            if (maximumForce < double.MaxValue)
             {
                 maxForceDt = maximumForce * dt;
                 maxForceDtSquared = maxForceDt * maxForceDt;
             }
             else
             {
-                maxForceDt = float.MaxValue;
-                maxForceDtSquared = float.MaxValue;
+                maxForceDt = double.MaxValue;
+                maxForceDtSquared = double.MaxValue;
             }
 
           

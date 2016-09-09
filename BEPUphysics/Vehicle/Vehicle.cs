@@ -123,7 +123,7 @@ namespace BEPUphysics.Vehicle
         /// Performs the end-of-frame update component.
         /// </summary>
         /// <param name="dt">Time since last frame in simulation seconds.</param>
-        void IEndOfFrameUpdateable.Update(float dt)
+        void IEndOfFrameUpdateable.Update(double dt)
         {
             //Graphics should be updated at the end of each frame.
             foreach (Wheel wheel in Wheels)
@@ -136,7 +136,7 @@ namespace BEPUphysics.Vehicle
         /// Performs the end-of-update update component.
         /// </summary>
         /// <param name="dt">Time since last frame in simulation seconds.</param>
-        void IEndOfTimeStepUpdateable.Update(float dt)
+        void IEndOfTimeStepUpdateable.Update(double dt)
         {
             //Graphics should be updated at the end of each frame.
             foreach (Wheel wheel in Wheels)
@@ -145,7 +145,7 @@ namespace BEPUphysics.Vehicle
             }
         }
 
-        void IBeforeNarrowPhaseUpdateable.Update(float dt)
+        void IBeforeNarrowPhaseUpdateable.Update(double dt)
         {
             //After broadphase, test for supports.
             foreach (Wheel wheel in wheels)
@@ -155,7 +155,7 @@ namespace BEPUphysics.Vehicle
             OnInvolvedEntitiesChanged();
         }
 
-        void IDuringForcesUpdateable.Update(float dt)
+        void IDuringForcesUpdateable.Update(double dt)
         {
             foreach (Wheel wheel in wheels)
             {
@@ -198,7 +198,7 @@ namespace BEPUphysics.Vehicle
         /// Updates the vehicle.
         /// Called automatically when needed by the owning Space.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
             int numActive = 0;
             foreach (Wheel wheel in Wheels)
@@ -234,7 +234,7 @@ namespace BEPUphysics.Vehicle
         /// Called once before the iteration loop.
         /// </summary>
         /// <param name="dt">Time since previous frame in simulation seconds.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             //TODO: to help balance multithreading, what if each wheel were its own SolverUpdateable
             //(no more CombinedUpdateable, basically)

@@ -15,16 +15,16 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         private readonly MotorSettings1D settings;
 
 
-        private float accumulatedImpulse;
+        private double accumulatedImpulse;
 
         /// <summary>
         /// Velocity needed to get closer to the goal.
         /// </summary>
-        protected float biasVelocity;
+        protected double biasVelocity;
 
         private Vector3 jacobianA, jacobianB;
-        private float error;
-        private float velocityToImpulse;
+        private double error;
+        private double velocityToImpulse;
 
 
         /// <summary>
@@ -90,11 +90,11 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the current relative velocity between the connected entities with respect to the constraint.
         /// </summary>
-        public float RelativeVelocity
+        public double RelativeVelocity
         {
             get
             {
-                float velocityA, velocityB;
+                double velocityA, velocityB;
                 Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
                 Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
                 return velocityA + velocityB;
@@ -105,7 +105,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
+        public double TotalImpulse
         {
             get { return accumulatedImpulse; }
         }
@@ -114,7 +114,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// Gets the current constraint error.
         /// If the motor is in velocity only mode, the error will be zero.
         /// </summary>
-        public float Error
+        public double Error
         {
             get { return error; }
         }
@@ -163,7 +163,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// Gets the mass matrix of the constraint.
         /// </summary>
         /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
-        public void GetMassMatrix(out float outputMassMatrix)
+        public void GetMassMatrix(out double outputMassMatrix)
         {
             outputMassMatrix = velocityToImpulse;
         }
@@ -182,7 +182,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
 
             Vector3 worldXAxis;
             Vector3.Cross(ref worldTwistAxisA, ref Toolbox.UpVector, out worldXAxis);
-            float length = worldXAxis.LengthSquared();
+            double length = worldXAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref worldTwistAxisA, ref Toolbox.RightVector, out worldXAxis);
@@ -208,20 +208,20 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Solves for velocity.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
-            float velocityA, velocityB;
+            double velocityA, velocityB;
             //Find the velocity contribution from each connection
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            float lambda = -(velocityA + velocityB) + biasVelocity - usedSoftness * accumulatedImpulse;
+            double lambda = -(velocityA + velocityB) + biasVelocity - usedSoftness * accumulatedImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Accumulate the impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
+            double previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForceDt, maxForceDt);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
@@ -245,7 +245,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// Do any necessary computations to prepare the constraint for this frame.
         /// </summary>
         /// <param name="dt">Simulation step length.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             basisA.rotationMatrix = connectionA.orientationMatrix;
             basisB.rotationMatrix = connectionB.orientationMatrix;
@@ -263,15 +263,15 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
 
 
                 //By dotting the measurement vector with a 2d plane's axes, we can get a local X and Y value.
-                float y, x;
+                double y, x;
                 Vector3.Dot(ref twistMeasureAxis, ref basisA.yAxis, out y);
                 Vector3.Dot(ref twistMeasureAxis, ref basisA.xAxis, out x);
-                var angle = (float) Math.Atan2(y, x);
+                var angle = (double) Math.Atan2(y, x);
 
                 //Compute goal velocity.
                 error = GetDistanceFromGoal(angle);
-                float absErrorOverDt = Math.Abs(error / dt);
-                float errorReduction;
+                double absErrorOverDt = Math.Abs(error / dt);
+                double errorReduction;
                 settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out usedSoftness);
                 biasVelocity = Math.Sign(error) * MathHelper.Min(settings.servo.baseCorrectiveSpeed, absErrorOverDt) + error * errorReduction;
 
@@ -310,7 +310,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
 
             //****** EFFECTIVE MASS MATRIX ******//
             //Connection A's contribution to the mass matrix
-            float entryA;
+            double entryA;
             Vector3 transformedAxis;
             if (connectionA.isDynamic)
             {
@@ -321,7 +321,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
                 entryA = 0;
 
             //Connection B's contribution to the mass matrix
-            float entryB;
+            double entryB;
             if (connectionB.isDynamic)
             {
                 Matrix3x3.Transform(ref jacobianB, ref connectionB.inertiaTensorInverse, out transformedAxis);
@@ -358,10 +358,10 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
             }
         }
 
-        private float GetDistanceFromGoal(float angle)
+        private double GetDistanceFromGoal(double angle)
         {
-            float forwardDistance;
-            float goalAngle = MathHelper.WrapAngle(settings.servo.goal);
+            double forwardDistance;
+            double goalAngle = MathHelper.WrapAngle(settings.servo.goal);
             if (goalAngle > 0)
             {
                 if (angle > goalAngle)

@@ -36,7 +36,7 @@ namespace BEPUphysics.Constraints
         /// Gets the mass matrix of the constraint.
         /// </summary>
         /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
-        void GetMassMatrix(out float outputMassMatrix);
+        void GetMassMatrix(out double outputMassMatrix);
     }
 
     /// <summary>

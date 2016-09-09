@@ -79,12 +79,12 @@ namespace BEPUphysics.CollisionShapes
         /// <param name="maximumLength">Maximum length, in units of the ray's direction's length, to test.</param>
         /// <param name="result">Hit data, if any.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public bool RayCast(Ray ray, float maximumLength, out RayCastResult result)
+        public bool RayCast(Ray ray, double maximumLength, out RayCastResult result)
         {
             var outputOverlappedElements = PhysicsResources.GetCollidableList();
             CollidableTree.GetOverlaps(ray, maximumLength, outputOverlappedElements);
             result = new RayCastResult();
-            result.HitData.T = float.MaxValue;
+            result.HitData.T = double.MaxValue;
             for (int i = 0; i < outputOverlappedElements.Count; ++i)
             {
                 RayHit hit;
@@ -98,7 +98,7 @@ namespace BEPUphysics.CollisionShapes
                 }
             }
             PhysicsResources.GiveBack(outputOverlappedElements);
-            return result.HitData.T < float.MaxValue;
+            return result.HitData.T < double.MaxValue;
         }
 
         /// <summary>
@@ -110,12 +110,12 @@ namespace BEPUphysics.CollisionShapes
         /// in the entry, this filter will be passed into inner ray casts.</param>
         /// <param name="result">Hit data, if any.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayCastResult result)
+        public bool RayCast(Ray ray, double maximumLength, Func<BroadPhaseEntry, bool> filter, out RayCastResult result)
         {
             var outputOverlappedElements = PhysicsResources.GetCollidableList();
             CollidableTree.GetOverlaps(ray, maximumLength, outputOverlappedElements);
             result = new RayCastResult();
-            result.HitData.T = float.MaxValue;
+            result.HitData.T = double.MaxValue;
             for (int i = 0; i < outputOverlappedElements.Count; ++i)
             {
                 RayHit hit;
@@ -129,7 +129,7 @@ namespace BEPUphysics.CollisionShapes
                 }
             }
             PhysicsResources.GiveBack(outputOverlappedElements);
-            return result.HitData.T < float.MaxValue;
+            return result.HitData.T < double.MaxValue;
         }
 
 
@@ -149,7 +149,7 @@ namespace BEPUphysics.CollisionShapes
 
             CollidableTree.GetOverlaps(boundingBox, outputOverlappedElements);
             result = new RayCastResult();
-            result.HitData.T = float.MaxValue;
+            result.HitData.T = double.MaxValue;
             for (int i = 0; i < outputOverlappedElements.Count; ++i)
             {
                 RayHit hit;
@@ -163,7 +163,7 @@ namespace BEPUphysics.CollisionShapes
                 }
             }
             PhysicsResources.GiveBack(outputOverlappedElements);
-            return result.HitData.T < float.MaxValue;
+            return result.HitData.T < double.MaxValue;
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace BEPUphysics.CollisionShapes
 
             CollidableTree.GetOverlaps(boundingBox, outputOverlappedElements);
             result = new RayCastResult();
-            result.HitData.T = float.MaxValue;
+            result.HitData.T = double.MaxValue;
             for (int i = 0; i < outputOverlappedElements.Count; ++i)
             {
                 RayHit hit;
@@ -198,7 +198,7 @@ namespace BEPUphysics.CollisionShapes
                 }
             }
             PhysicsResources.GiveBack(outputOverlappedElements);
-            return result.HitData.T < float.MaxValue;
+            return result.HitData.T < double.MaxValue;
         }
 
 

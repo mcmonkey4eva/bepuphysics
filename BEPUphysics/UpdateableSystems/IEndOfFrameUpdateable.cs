@@ -9,7 +9,7 @@
         /// Updates the object at the end of the frame.
         /// </summary>
         /// <param name="dt">Time step duration.</param>
-        void Update(float dt);
+        void Update(double dt);
 
     }
 }

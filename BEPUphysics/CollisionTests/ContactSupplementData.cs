@@ -20,6 +20,6 @@ namespace BEPUphysics.CollisionTests
         /// <summary>
         /// Original penetration depth computed at the associatd contact.
         /// </summary>
-        public float BasePenetrationDepth;
+        public double BasePenetrationDepth;
     }
 }

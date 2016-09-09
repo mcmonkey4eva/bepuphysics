@@ -94,7 +94,7 @@ namespace BEPUphysics.Paths
         /// <param name="controlPointIndex">Index of the starting control point of the subinterval.</param>
         /// <param name="weight">Location to evaluate on the subinterval from 0 to 1.</param>
         /// <param name="value">Value at the given location.</param>
-        public abstract void Evaluate(int controlPointIndex, float weight, out TValue value);
+        public abstract void Evaluate(int controlPointIndex, double weight, out TValue value);
 
         /// <summary>
         /// Gets the curve's bounding index information.
@@ -134,18 +134,18 @@ namespace BEPUphysics.Paths
             {
                 //Somehow the index is the very last index, so next index would be invalid.
                 //Just 'clamp' it.
-                //This generally implies a bug, but it might also just be some very close floating point issue.
+                //This generally implies a bug, but it might also just be some very close doubleing point issue.
                 value = ControlPoints[maxIndex].Value;
             }
             else
             {
                 var denominator = ControlPoints[index + 1].Time - ControlPoints[index].Time;
 
-                float intervalTime;
+                double intervalTime;
                 if (denominator < Toolbox.Epsilon)
                     intervalTime = 0;
                 else
-                    intervalTime = (float) ((time - ControlPoints[index].Time) / denominator);
+                    intervalTime = (double) ((time - ControlPoints[index].Time) / denominator);
 
 
                 Evaluate(index, intervalTime, out value);

@@ -9,7 +9,7 @@ namespace BEPUphysics.Vehicle
     /// <param name="usingKineticFriction">True if the friction coefficients passed into the blender are kinetic coefficients, false otherwise.</param>
     /// <param name="wheel">Wheel being blended.</param>
     /// <returns>Blended friction coefficient.</returns>
-    public delegate float WheelFrictionBlender(float wheelFriction, float materialFriction, bool usingKineticFriction, Wheel wheel);
+    public delegate double WheelFrictionBlender(double wheelFriction, double materialFriction, bool usingKineticFriction, Wheel wheel);
 
 
 }

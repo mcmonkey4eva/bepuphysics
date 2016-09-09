@@ -12,19 +12,19 @@ namespace BEPUphysics.Constraints.Collision
     /// </summary>
     public class TwistFrictionConstraint : SolverUpdateable
     {
-        private readonly float[] leverArms = new float[4];
+        private readonly double[] leverArms = new double[4];
         private ConvexContactManifoldConstraint contactManifoldConstraint;
         ///<summary>
         /// Gets the contact manifold constraint that owns this constraint.
         ///</summary>
         public ConvexContactManifoldConstraint ContactManifoldConstraint { get { return contactManifoldConstraint; } }
-        internal float accumulatedImpulse;
-        private float angularX, angularY, angularZ;
+        internal double accumulatedImpulse;
+        private double angularX, angularY, angularZ;
         private int contactCount;
-        private float friction;
+        private double friction;
         Entity entityA, entityB;
         bool entityADynamic, entityBDynamic;
-        private float velocityToImpulse;
+        private double velocityToImpulse;
 
         ///<summary>
         /// Constructs a new twist friction constraint.
@@ -37,7 +37,7 @@ namespace BEPUphysics.Constraints.Collision
         /// <summary>
         /// Gets the torque applied by twist friction.
         /// </summary>
-        public float TotalTorque
+        public double TotalTorque
         {
             get { return accumulatedImpulse; }
         }
@@ -45,11 +45,11 @@ namespace BEPUphysics.Constraints.Collision
         ///<summary>
         /// Gets the angular velocity between the associated entities.
         ///</summary>
-        public float RelativeVelocity
+        public double RelativeVelocity
         {
             get
             {
-                float lambda = 0;
+                double lambda = 0;
                 if (entityA != null)
                     lambda = entityA.angularVelocity.X * angularX + entityA.angularVelocity.Y * angularY + entityA.angularVelocity.Z * angularZ;
                 if (entityB != null)
@@ -62,16 +62,16 @@ namespace BEPUphysics.Constraints.Collision
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
         /// </summary>
         /// <returns>The rough applied impulse magnitude.</returns>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
             //Compute relative velocity.  Collisions can occur between an entity and a non-entity.  If it's not an entity, assume it's not moving.
-            float lambda = RelativeVelocity;
+            double lambda = RelativeVelocity;
             
             lambda *= velocityToImpulse; //convert to impulse
 
             //Clamp accumulated impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            float maximumFrictionForce = 0;
+            double previousAccumulatedImpulse = accumulatedImpulse;
+            double maximumFrictionForce = 0;
             for (int i = 0; i < contactCount; i++)
             {
                 maximumFrictionForce += leverArms[i] * contactManifoldConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
@@ -111,7 +111,7 @@ namespace BEPUphysics.Constraints.Collision
         /// Performs the frame's configuration step.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
 
             entityADynamic = entityA != null && entityA.isDynamic;
@@ -124,10 +124,10 @@ namespace BEPUphysics.Constraints.Collision
             angularZ = normal.Z;
 
             //Compute inverse effective mass matrix
-            float entryA, entryB;
+            double entryA, entryB;
 
             //these are the transformed coordinates
-            float tX, tY, tZ;
+            double tX, tY, tZ;
             if (entityADynamic)
             {
                 tX = angularX * entityA.inertiaTensorInverse.M11 + angularY * entityA.inertiaTensorInverse.M21 + angularZ * entityA.inertiaTensorInverse.M31;
@@ -152,7 +152,7 @@ namespace BEPUphysics.Constraints.Collision
 
 
             //Compute the relative velocity to determine what kind of friction to use
-            float relativeAngularVelocity = RelativeVelocity;
+            double relativeAngularVelocity = RelativeVelocity;
             //Set up friction and find maximum friction force
             Vector3 relativeSlidingVelocity = contactManifoldConstraint.SlidingFriction.relativeVelocity;
             friction = Math.Abs(relativeAngularVelocity) > CollisionResponseSettings.StaticFrictionVelocityThreshold ||

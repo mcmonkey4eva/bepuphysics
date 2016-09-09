@@ -35,11 +35,11 @@ namespace BEPUik
             set { LocalAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation)); }
         }
 
-        private float maximumAngle;
+        private double maximumAngle;
         /// <summary>
         /// Gets or sets the maximum angle between the two axes allowed by the constraint.
         /// </summary>
-        public float MaximumAngle
+        public double MaximumAngle
         {
             get { return maximumAngle; }
             set { maximumAngle = Math.Max(0, value); }
@@ -54,7 +54,7 @@ namespace BEPUik
         /// <param name="axisA">Axis attached to connectionA in world space.</param>
         /// <param name="axisB">Axis attached to connectionB in world space.</param>
         /// <param name="maximumAngle">Maximum angle allowed between connectionA's axis and connectionB's axis.</param>
-        public IKSwingLimit(Bone connectionA, Bone connectionB, Vector3 axisA, Vector3 axisB, float maximumAngle)
+        public IKSwingLimit(Bone connectionA, Bone connectionB, Vector3 axisA, Vector3 axisB, double maximumAngle)
             : base(connectionA, connectionB)
         {
             AxisA = axisA;
@@ -73,11 +73,11 @@ namespace BEPUik
             Quaternion.Transform(ref LocalAxisA, ref ConnectionA.Orientation, out axisA);
             Quaternion.Transform(ref LocalAxisB, ref ConnectionB.Orientation, out axisB);
 
-            float dot;
+            double dot;
             Vector3.Dot(ref axisA, ref axisB, out dot);
 
             //Yes, we could avoid this acos here. Performance is not the highest goal of this system; the less tricks used, the easier it is to understand.
-            float angle = (float)Math.Acos(MathHelper.Clamp(dot, -1, 1));
+            double angle = (double)Math.Acos(MathHelper.Clamp(dot, -1, 1));
 
             //One angular DOF is constrained by this limit.
             Vector3 hingeAxis;

@@ -14,7 +14,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <summary>
         /// Gets or sets the length of the cone.
         /// </summary>
-        public float Height
+        public double Height
         {
             get
             {
@@ -29,7 +29,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <summary>
         /// Gets or sets the radius of the cone.
         /// </summary>
-        public float Radius
+        public double Radius
         {
             get
             {
@@ -42,12 +42,12 @@ namespace BEPUphysics.Entities.Prefabs
         }
 
 
-        private Cone(float high, float rad)
+        private Cone(double high, double rad)
             :base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)))
         {
         }
 
-        private Cone(float high, float rad, float mass)
+        private Cone(double high, double rad, double mass)
             :base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)), mass)
         {
         }
@@ -61,7 +61,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="height">Height of the cone.</param>
         /// <param name="radius">Radius of the cone.</param>
         /// <param name="mass">Mass of the object.</param>
-        public Cone(Vector3 position, float height, float radius, float mass)
+        public Cone(Vector3 position, double height, double radius, double mass)
             : this(height, radius, mass)
         {
             Position = position;
@@ -73,7 +73,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="position">Position of the cone.</param>
         /// <param name="height">Height of the cone.</param>
         /// <param name="radius">Radius of the cone.</param>
-        public Cone(Vector3 position, float height, float radius)
+        public Cone(Vector3 position, double height, double radius)
             : this(height, radius)
         {
             Position = position;
@@ -86,7 +86,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="height">Height of the cone.</param>
         /// <param name="radius">Radius of the cone.</param>
         /// <param name="mass">Mass of the object.</param>
-        public Cone(MotionState motionState, float height, float radius, float mass)
+        public Cone(MotionState motionState, double height, double radius, double mass)
             : this(height, radius, mass)
         {
             MotionState = motionState;
@@ -98,7 +98,7 @@ namespace BEPUphysics.Entities.Prefabs
         /// <param name="motionState">Motion state specifying the entity's initial state.</param>
         /// <param name="height">Height of the cone.</param>
         /// <param name="radius">Radius of the cone.</param>
-        public Cone(MotionState motionState, float height, float radius)
+        public Cone(MotionState motionState, double height, double radius)
             : this(height, radius)
         {
             MotionState = motionState;

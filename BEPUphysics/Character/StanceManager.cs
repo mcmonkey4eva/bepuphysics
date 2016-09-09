@@ -41,11 +41,11 @@ namespace BEPUphysics.Character
             proneQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
         }
 
-        private float standingHeight;
+        private double standingHeight;
         /// <summary>
         /// Gets or sets the height of the character while standing.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently standing.
         /// </summary>
-        public float StandingHeight
+        public double StandingHeight
         {
             get { return standingHeight; }
             set
@@ -63,11 +63,11 @@ namespace BEPUphysics.Character
             }
         }
 
-        private float crouchingHeight;
+        private double crouchingHeight;
         /// <summary>
         /// Gets or sets the height of the character while crouching.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently crouching.
         /// </summary>
-        public float CrouchingHeight
+        public double CrouchingHeight
         {
             get { return crouchingHeight; }
             set
@@ -86,11 +86,11 @@ namespace BEPUphysics.Character
             }
         }
 
-        private float proneHeight;
+        private double proneHeight;
         /// <summary>
         /// Gets or sets the height of the character while prone.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently prone.
         /// </summary>
-        public float ProneHeight
+        public double ProneHeight
         {
             get { return proneHeight; }
             set
@@ -138,7 +138,7 @@ namespace BEPUphysics.Character
         /// <param name="proneHeight">Prone height of the character.</param>
         /// <param name="queryManager">Provider of queries used by the stance manager to test if it is okay to change stances.</param>
         /// <param name="supportFinder">Support finder used by the character.</param>
-        public StanceManager(Cylinder characterBody, float crouchingHeight, float proneHeight, QueryManager queryManager, SupportFinder supportFinder)
+        public StanceManager(Cylinder characterBody, double crouchingHeight, double proneHeight, QueryManager queryManager, SupportFinder supportFinder)
         {
             this.QueryManager = queryManager;
             this.SupportFinder = supportFinder;
@@ -180,7 +180,7 @@ namespace BEPUphysics.Character
         /// <param name="newHeight">If the transition is safe, the new height of the character. Zero otherwise.</param>
         /// <param name="newPosition">If the transition is safe, the new location of the character body if the transition occurred. Zero vector otherwise.</param>
         /// <returns>True if the target stance is different than the current stance and the transition is valid, false otherwise.</returns>
-        public bool CheckTransition(Stance targetStance, out float newHeight, out Vector3 newPosition)
+        public bool CheckTransition(Stance targetStance, out double newHeight, out Vector3 newPosition)
         {
             var currentPosition = characterBody.position;
             var down = characterBody.orientationMatrix.Down;
@@ -190,7 +190,7 @@ namespace BEPUphysics.Character
             if (CurrentStance != targetStance)
             {
 
-                float currentHeight;
+                double currentHeight;
                 switch (CurrentStance)
                 {
                     case Stance.Prone:
@@ -203,7 +203,7 @@ namespace BEPUphysics.Character
                         currentHeight = standingHeight;
                         break;
                 }
-                float targetHeight;
+                double targetHeight;
                 switch (targetStance)
                 {
                     case Stance.Prone:
@@ -277,10 +277,10 @@ namespace BEPUphysics.Character
                         //This is a complicated case.  We must perform a semi-downstep query.
                         //It's different than a downstep because the head may be obstructed as well.
 
-                        float highestBound = 0;
-                        float lowestBound = (targetHeight - currentHeight) * .5f;
-                        float currentOffset = lowestBound;
-                        float maximum = lowestBound;
+                        double highestBound = 0;
+                        double lowestBound = (targetHeight - currentHeight) * .5f;
+                        double currentOffset = lowestBound;
+                        double maximum = lowestBound;
 
                         int attempts = 0;
                         //Don't keep querying indefinitely.  If we fail to reach it in a few informed steps, it's probably not worth continuing.
@@ -288,7 +288,7 @@ namespace BEPUphysics.Character
                         while (attempts++ < 5 && lowestBound - highestBound > Toolbox.BigEpsilon)
                         {
                             Vector3 candidatePosition = currentPosition + currentOffset * down;
-                            float hintOffset;
+                            double hintOffset;
                             switch (TrySupportLocation(queryObject, ref candidatePosition, out hintOffset, ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts))
                             {
                                 case CharacterContactPositionState.Accepted:
@@ -342,7 +342,7 @@ namespace BEPUphysics.Character
         /// <returns>Whether or not the character was able to change its stance.</returns>
         public bool UpdateStance(out Vector3 newPosition)
         {
-            float newHeight;
+            double newHeight;
             if (CheckTransition(DesiredStance, out newHeight, out newPosition))
             {
                 CurrentStance = DesiredStance;
@@ -379,8 +379,8 @@ namespace BEPUphysics.Character
             //Since we already have the penetration depths, we don't need to use the positions of the contacts.
             foreach (var c in SupportFinder.SideContacts)
             {
-                float dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
-                float depth = dot * c.Contact.PenetrationDepth;
+                double dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
+                double depth = dot * c.Contact.PenetrationDepth;
                 if (depth > Math.Max(c.Contact.PenetrationDepth, CollisionDetectionSettings.AllowedPenetration))
                     return true;
 
@@ -388,7 +388,7 @@ namespace BEPUphysics.Character
             return false;
         }
 
-        CharacterContactPositionState TrySupportLocation(ConvexCollidable<CylinderShape> queryObject, ref Vector3 position, out float hintOffset,
+        CharacterContactPositionState TrySupportLocation(ConvexCollidable<CylinderShape> queryObject, ref Vector3 position, out double hintOffset,
             ref QuickList<CharacterContact> tractionContacts, ref QuickList<CharacterContact> supportContacts, ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts)
         {
             hintOffset = 0;

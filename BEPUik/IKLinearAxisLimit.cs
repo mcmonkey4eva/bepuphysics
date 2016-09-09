@@ -51,21 +51,21 @@ namespace BEPUik
             set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
         }
 
-        private float minimumDistance;
+        private double minimumDistance;
         /// <summary>
         /// Gets or sets the minimum distance that the joint connections should be kept from each other.
         /// </summary>
-        public float MinimumDistance
+        public double MinimumDistance
         {
             get { return minimumDistance; }
             set { minimumDistance = value; }
         }
 
-         private float maximumDistance;
+         private double maximumDistance;
         /// <summary>
         /// Gets or sets the maximum distance that the joint connections should be kept from each other.
         /// </summary>
-        public float MaximumDistance
+        public double MaximumDistance
         {
             get { return maximumDistance; }
             set { maximumDistance = value; }
@@ -81,7 +81,7 @@ namespace BEPUik
         /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
         /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other along the axis.</param>
         /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other along the axis.</param>
-        public IKLinearAxisLimit(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection, Vector3 anchorB, float minimumDistance, float maximumDistance)
+        public IKLinearAxisLimit(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection, Vector3 anchorB, double minimumDistance, double maximumDistance)
             : base(connectionA, connectionB)
         {
             LineAnchor = lineAnchor;
@@ -106,7 +106,7 @@ namespace BEPUik
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
             //This entire constraint is very similar to the IKDistanceLimit, except the current distance is along an axis.
-            float currentDistance;
+            double currentDistance;
             Vector3.Dot(ref separation, ref lineDirection, out currentDistance);
 
             //Compute jacobians

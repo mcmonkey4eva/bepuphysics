@@ -35,14 +35,14 @@ namespace BEPUik
         internal Vector3 linearVelocity;
 
 
-        internal float inverseMass;
+        internal double inverseMass;
 
         /// <summary>
         /// Gets or sets the mass of the bone.
         /// High mass bones resist motion more than those of small mass.
         /// Setting the mass updates the inertia tensor of the bone.
         /// </summary>
-        public float Mass
+        public double Mass
         {
             get { return 1 / inverseMass; }
             set
@@ -64,7 +64,7 @@ namespace BEPUik
         /// <summary>
         /// An arbitrary scaling factor is applied to the inertia tensor. This tends to improve stability.
         /// </summary>
-        public static float InertiaTensorScaling = 2.5f;
+        public static double InertiaTensorScaling = 2.5f;
 
         /// <summary>
         /// Gets the list of joints affecting this bone.
@@ -85,12 +85,12 @@ namespace BEPUik
         /// </summary>
         public bool IsActive { get; internal set; }
 
-        private float radius;
+        private double radius;
         /// <summary>
         /// Gets or sets the radius of the bone.
         /// Setting the radius changes the inertia tensor of the bone.
         /// </summary>
-        public float Radius
+        public double Radius
         {
             get
             { return radius; }
@@ -101,13 +101,13 @@ namespace BEPUik
             }
         }
 
-        private float halfHeight;
+        private double halfHeight;
         /// <summary>
         /// Gets or sets the height, divided by two, of the bone.
         /// The half height extends both ways from the center position of the bone.
         /// Setting the half height changes the inertia tensor of the bone.
         /// </summary>
-        public float HalfHeight
+        public double HalfHeight
         {
             get { return halfHeight; }
             set
@@ -121,7 +121,7 @@ namespace BEPUik
         /// Gets or sets the height of the bone.
         /// Setting the height changes the inertia tensor of the bone.
         /// </summary>
-        public float Height
+        public double Height
         {
             get { return halfHeight * 2; }
             set
@@ -139,7 +139,7 @@ namespace BEPUik
         /// <param name="radius">Radius of the bone.</param>
         /// <param name="height">Height of the bone.</param>
         /// <param name="mass">Mass of the bone.</param>
-        public Bone(Vector3 position, Quaternion orientation, float radius, float height, float mass)
+        public Bone(Vector3 position, Quaternion orientation, double radius, double height, double mass)
             :this(position, orientation, radius, height)
         {
             Mass = mass;
@@ -152,7 +152,7 @@ namespace BEPUik
         /// <param name="orientation">Initial orientation of the bone.</param>
         /// <param name="radius">Radius of the bone.</param>
         /// <param name="height">Height of the bone.</param>
-        public Bone(Vector3 position, Quaternion orientation, float radius, float height)
+        public Bone(Vector3 position, Quaternion orientation, double radius, double height)
         {
             Mass = 1;
             Position = position;
@@ -166,7 +166,7 @@ namespace BEPUik
         {
             var localInertiaTensor = new Matrix3x3();
             var multiplier = Mass * InertiaTensorScaling;
-            float diagValue = (.0833333333f * Height * Height + .25f * Radius * Radius) * multiplier;
+            double diagValue = (.0833333333f * Height * Height + .25f * Radius * Radius) * multiplier;
             localInertiaTensor.M11 = diagValue;
             localInertiaTensor.M22 = .5f * Radius * Radius * multiplier;
             localInertiaTensor.M33 = diagValue;

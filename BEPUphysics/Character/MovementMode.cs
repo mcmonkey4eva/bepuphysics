@@ -22,6 +22,6 @@ namespace BEPUphysics.Character
         /// <summary>
         /// The character has no support.
         /// </summary>
-        Floating
+        doubleing
     }
 }

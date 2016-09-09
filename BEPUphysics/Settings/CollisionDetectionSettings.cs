@@ -8,7 +8,7 @@ namespace BEPUphysics.Settings
     {
 
 
-        internal static float ContactInvalidationLengthSquared = .01f;
+        internal static double ContactInvalidationLengthSquared = .01f;
 
         /// <summary>
         /// For persistent manifolds, contacts are represented by an offset in local space of two colliding bodies.
@@ -18,11 +18,11 @@ namespace BEPUphysics.Settings
         /// If the world is smaller or larger than 'normal' for the engine, adjusting this value proportionally can improve contact caching behavior.
         /// The default value of .1f works well for worlds that operate on the order of 1 unit.
         /// </summary>
-        public static float ContactInvalidationLength
+        public static double ContactInvalidationLength
         {
             get
             {
-                return (float)Math.Sqrt(ContactInvalidationLengthSquared);
+                return (double)Math.Sqrt(ContactInvalidationLengthSquared);
             }
             set
             {
@@ -31,17 +31,17 @@ namespace BEPUphysics.Settings
         }
 
 
-        internal static float ContactMinimumSeparationDistanceSquared = .0009f;
+        internal static double ContactMinimumSeparationDistanceSquared = .0009f;
         /// <summary>
         /// In persistent manifolds, if two contacts are too close together, then 
         /// the system will not use one of them.  This avoids redundant constraints.
         /// Defaults to .03f.
         /// </summary>
-        public static float ContactMinimumSeparationDistance
+        public static double ContactMinimumSeparationDistance
         {
             get
             {
-                return (float)Math.Sqrt(ContactMinimumSeparationDistanceSquared);
+                return (double)Math.Sqrt(ContactMinimumSeparationDistanceSquared);
             }
             set
             {
@@ -49,21 +49,21 @@ namespace BEPUphysics.Settings
             }
         }
 
-        internal static float nonconvexNormalDotMinimum = .99f;
+        internal static double nonconvexNormalDotMinimum = .99f;
         /// <summary>
         /// In regular convex manifolds, two contacts are considered redundant if their positions are too close together.  
         /// In nonconvex manifolds, the normal must also be tested, since a contact in the same location could have a different normal.
         /// This property is the minimum angle in radians between normals below which contacts are considered redundant.
         /// </summary>
-        public static float NonconvexNormalAngleDifferenceMinimum
+        public static double NonconvexNormalAngleDifferenceMinimum
         {
             get
             {
-                return (float)Math.Acos(nonconvexNormalDotMinimum);
+                return (double)Math.Acos(nonconvexNormalDotMinimum);
             }
             set
             {
-                nonconvexNormalDotMinimum = (float)Math.Cos(value);
+                nonconvexNormalDotMinimum = (double)Math.Cos(value);
             }
         }
 
@@ -71,20 +71,20 @@ namespace BEPUphysics.Settings
         /// The default amount of allowed penetration into the margin before position correcting impulses will be applied.
         /// Defaults to .01f.
         /// </summary>
-        public static float AllowedPenetration = .01f;
+        public static double AllowedPenetration = .01f;
 
         /// <summary>
         /// Default collision margin around objects.  Margins help prevent objects from interpenetrating and improve stability.
         /// Defaults to .04f.
         /// </summary>
-        public static float DefaultMargin = .04f;
+        public static double DefaultMargin = .04f;
 
-        internal static float maximumContactDistance = .1f;
+        internal static double maximumContactDistance = .1f;
         /// <summary>
         /// Maximum distance between the surfaces defining a contact point allowed before removing the contact.
         /// Defaults to .1f.
         /// </summary>
-        public static float MaximumContactDistance
+        public static double MaximumContactDistance
         {
             get
             {

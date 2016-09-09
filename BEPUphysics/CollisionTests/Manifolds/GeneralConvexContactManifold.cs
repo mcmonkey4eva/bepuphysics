@@ -68,7 +68,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
         /// Updates the manifold.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             //First, refresh all existing contacts.  This is an incremental manifold.
             ContactRefresher.ContactRefresh(contacts, supplementData, ref collidableA.worldTransform, ref collidableB.worldTransform, contactIndicesToRemove);
@@ -82,7 +82,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                 //Eliminate any old contacts which have normals which would fight with this new contact.
                 for (int i = 0; i < contacts.Count; ++i)
                 {
-                    float normalDot;
+                    double normalDot;
                     Vector3.Dot(ref contacts.Elements[i].Normal, ref contact.Normal, out normalDot);
                     if (normalDot < 0)
                     {
@@ -147,7 +147,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
             contactCandidate.Validate();
             for (int i = 0; i < contacts.Count; i++)
             {
-                float distanceSquared;
+                double distanceSquared;
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);
                 if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)
                 {

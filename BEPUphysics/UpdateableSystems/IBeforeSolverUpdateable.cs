@@ -9,7 +9,7 @@
         /// Updates the updateable before the solver.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
-        void Update(float dt);
+        void Update(double dt);
 
     }
 }

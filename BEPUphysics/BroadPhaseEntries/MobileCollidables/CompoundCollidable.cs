@@ -221,7 +221,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
             }
         }
 
-        protected internal override void UpdateBoundingBoxInternal(float dt)
+        protected internal override void UpdateBoundingBoxInternal(double dt)
         {
             for (int i = 0; i < children.Count; i++)
             {
@@ -240,7 +240,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="maximumLength">Maximum length, in units of the ray's direction's length, to test.</param>
         /// <param name="rayHit">Hit location of the ray on the collidable, if any.</param>
         /// <returns>Whether or not the ray hit the collidable.</returns>
-        public override bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
+        public override bool RayCast(Ray ray, double maximumLength, out RayHit rayHit)
         {
             CompoundChild hitChild;
             bool hit = RayCast(ray, maximumLength, out rayHit, out hitChild);
@@ -254,7 +254,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="maximumLength">Maximum length, in units of the ray's direction's length, to test.</param>
         /// <param name="rayHit">Hit data and the hit child collidable, if any.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public bool RayCast(Ray ray, float maximumLength, out RayCastResult rayHit)
+        public bool RayCast(Ray ray, double maximumLength, out RayCastResult rayHit)
         {
             RayHit hitData;
             CompoundChild hitChild;
@@ -271,14 +271,14 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="rayHit">Hit data, if any.</param>
         /// <param name="hitChild">Child collidable hit by the ray, if any.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public bool RayCast(Ray ray, float maximumLength, out RayHit rayHit, out CompoundChild hitChild)
+        public bool RayCast(Ray ray, double maximumLength, out RayHit rayHit, out CompoundChild hitChild)
         {
             rayHit = new RayHit();
             hitChild = null;
             var hitElements = PhysicsResources.GetCompoundChildList();
             if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
             {
-                rayHit.T = float.MaxValue;
+                rayHit.T = double.MaxValue;
                 for (int i = 0; i < hitElements.Count; i++)
                 {
                     EntityCollidable candidate = hitElements.Elements[i].CollisionInformation;
@@ -290,7 +290,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
                     }
                 }
                 PhysicsResources.GiveBack(hitElements);
-                return rayHit.T != float.MaxValue;
+                return rayHit.T != double.MaxValue;
             }
             PhysicsResources.GiveBack(hitElements);
             return false;
@@ -305,7 +305,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// in the entry, this filter will be passed into inner ray casts.</param>
         /// <param name="rayHit">Hit location of the ray on the collidable, if any.</param>
         /// <returns>Whether or not the ray hit the collidable.</returns>
-        public override bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit)
+        public override bool RayCast(Ray ray, double maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit)
         {
             CompoundChild hitChild;
             bool hit = RayCast(ray, maximumLength, filter, out rayHit, out hitChild);
@@ -321,7 +321,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="filter">Test to apply to the entry. If it returns true, the entry is processed, otherwise the entry is ignored. If a collidable hierarchy is present
         /// in the entry, this filter will be passed into inner ray casts.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayCastResult rayHit)
+        public bool RayCast(Ray ray, double maximumLength, Func<BroadPhaseEntry, bool> filter, out RayCastResult rayHit)
         {
             RayHit hitData;
             CompoundChild hitChild;
@@ -340,7 +340,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="rayHit">Hit location of the ray on the collidable, if any.</param>
         /// <param name="hitChild">Child hit by the ray.</param>
         /// <returns>Whether or not the ray hit the collidable.</returns>
-        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit, out CompoundChild hitChild)
+        public bool RayCast(Ray ray, double maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit, out CompoundChild hitChild)
         {
             rayHit = new RayHit();
             hitChild = null;
@@ -349,7 +349,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
                 var hitElements = PhysicsResources.GetCompoundChildList();
                 if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
                 {
-                    rayHit.T = float.MaxValue;
+                    rayHit.T = double.MaxValue;
                     for (int i = 0; i < hitElements.Count; i++)
                     {
                         RayHit tempHit;
@@ -360,7 +360,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
                         }
                     }
                     PhysicsResources.GiveBack(hitElements);
-                    return rayHit.T != float.MaxValue;
+                    return rayHit.T != double.MaxValue;
                 }
                 PhysicsResources.GiveBack(hitElements);
             }
@@ -420,7 +420,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
             var hitElements = PhysicsResources.GetCompoundChildList();
             if (hierarchy.Tree.GetOverlaps(boundingBox, hitElements))
             {
-                hit.T = float.MaxValue;
+                hit.T = double.MaxValue;
                 for (int i = 0; i < hitElements.Count; i++)
                 {
                     var candidate = hitElements.Elements[i].CollisionInformation;
@@ -432,7 +432,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
                     }
                 }
                 PhysicsResources.GiveBack(hitElements);
-                return hit.T != float.MaxValue;
+                return hit.T != double.MaxValue;
             }
             PhysicsResources.GiveBack(hitElements);
             return false;
@@ -497,7 +497,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
             var hitElements = PhysicsResources.GetCompoundChildList();
             if (hierarchy.Tree.GetOverlaps(boundingBox, hitElements))
             {
-                hit.T = float.MaxValue;
+                hit.T = double.MaxValue;
                 for (int i = 0; i < hitElements.Count; i++)
                 {
                     var candidate = hitElements.Elements[i].CollisionInformation;
@@ -509,7 +509,7 @@ namespace BEPUphysics.BroadPhaseEntries.MobileCollidables
                     }
                 }
                 PhysicsResources.GiveBack(hitElements);
-                return hit.T != float.MaxValue;
+                return hit.T != double.MaxValue;
             }
             PhysicsResources.GiveBack(hitElements);
             return false;

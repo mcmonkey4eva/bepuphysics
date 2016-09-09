@@ -8,14 +8,14 @@
         ///<summary>
         /// Kinetic friction between the pair of objects.
         ///</summary>
-        public float KineticFriction;
+        public double KineticFriction;
         ///<summary>
         /// Static friction between the pair of objects.
         ///</summary>
-        public float StaticFriction;
+        public double StaticFriction;
         ///<summary>
         /// Bounciness between the pair of objects.
         ///</summary>
-        public float Bounciness;
+        public double Bounciness;
     }
 }

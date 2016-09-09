@@ -94,12 +94,12 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         /// The baseline amount that a GJK iteration must progress through to avoid exiting.
         /// Defaults to 1e-8f.
         ///</summary>
-        public static float ProgressionEpsilon = 1e-8f;
+        public static double ProgressionEpsilon = 1e-8f;
         /// <summary>
         /// The baseline amount that an iteration must converge with its distance to avoid exiting.
         /// Defaults to 1e-7f.
         /// </summary>
-        public static float DistanceConvergenceEpsilon = 1e-7f;
+        public static double DistanceConvergenceEpsilon = 1e-7f;
 
         ///<summary>
         /// Simplex as viewed from the local space of A.
@@ -119,15 +119,15 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         /// <summary>
         /// Weight of vertex A.
         /// </summary>
-        public float U;
+        public double U;
         /// <summary>
         /// Weight of vertex B.
         /// </summary>
-        public float V;
+        public double V;
         /// <summary>
         /// Weight of vertex C.
         /// </summary>
-        public float W;
+        public double W;
         /// <summary>
         /// Transform of the second shape in the first shape's local space.
         /// </summary>
@@ -137,7 +137,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         private PairSimplex(ref RigidTransform localTransformB)
         {
             //This isn't a very good approach since the transform position is not guaranteed to be within the object.  Would have to use the GetNewSimplexPoint to make it valid.
-            previousDistanceToClosest = float.MaxValue;
+            previousDistanceToClosest = double.MaxValue;
             errorTolerance = 0;
             LocalTransformB = localTransformB;
             //Warm up the simplex using the centroids.
@@ -177,7 +177,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             //Most dangerous degeneracy seen so far is tetrahedron.  It fails to find any points on opposing sides due to numerical problems and returns intersection.
 
 
-            previousDistanceToClosest = float.MaxValue;
+            previousDistanceToClosest = double.MaxValue;
             errorTolerance = 0;
             LocalTransformB = localTransformB;
 
@@ -213,7 +213,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                     D = new Vector3();
 
                     ////Test for degeneracy.
-                    //float edgeLengthAB;
+                    //double edgeLengthAB;
                     //Vector3.DistanceSquared(ref A, ref B, out edgeLengthAB);
                     //if (edgeLengthAB < Toolbox.Epsilon)
                     //    State = SimplexState.Point;
@@ -267,7 +267,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                     //Vector3.Subtract(ref C, ref A, out AC);
                     //Vector3.Subtract(ref D, ref A, out AD);
                     //Vector3.Cross(ref AB, ref AC, out cross);
-                    //float volume;
+                    //double volume;
                     //Vector3.Dot(ref cross, ref AD, out volume);
 
                     ////Volume is small compared to partial 'perimeter.'
@@ -379,7 +379,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             Vector3 segmentDisplacement;
             Vector3.Subtract(ref B, ref A, out segmentDisplacement);
 
-            float dotA;
+            double dotA;
             Vector3.Dot(ref segmentDisplacement, ref A, out dotA);
             if (dotA > 0)
             {
@@ -391,7 +391,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 point = A;
                 return;
             }
-            float dotB;
+            double dotB;
             Vector3.Dot(ref segmentDisplacement, ref B, out dotB);
             if (dotB > 0)
             {
@@ -434,7 +434,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             //Check to see if it's outside A.
             //TODO: Note that in a boolean-style GJK, it shouldn't be possible to be outside A.
-            float AdotAB, AdotAC;
+            double AdotAB, AdotAC;
             Vector3.Dot(ref ab, ref A, out AdotAB);
             Vector3.Dot(ref ac, ref A, out AdotAC);
             AdotAB = -AdotAB;
@@ -450,7 +450,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             //Check to see if it's outside B.
             //TODO: Note that in a boolean-style GJK, it shouldn't be possible to be outside B.
-            float BdotAB, BdotAC;
+            double BdotAB, BdotAC;
             Vector3.Dot(ref ab, ref B, out BdotAB);
             Vector3.Dot(ref ac, ref B, out BdotAC);
             BdotAB = -BdotAB;
@@ -468,7 +468,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             }
 
             //Check to see if it's outside AB.
-            float vc = AdotAB * BdotAC - BdotAB * AdotAC;
+            double vc = AdotAB * BdotAC - BdotAB * AdotAC;
             if (vc <= 0 && AdotAB > 0 && BdotAB < 0)//Note > and < instead of => <=; avoids possibly division by zero
             {
                 State = SimplexState.Segment;
@@ -482,7 +482,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             //Check to see if it's outside C.
             //TODO: Note that in a boolean-style GJK, it shouldn't be possible to be outside C.
-            float CdotAB, CdotAC;
+            double CdotAB, CdotAC;
             Vector3.Dot(ref ab, ref C, out CdotAB);
             Vector3.Dot(ref ac, ref C, out CdotAC);
             CdotAB = -CdotAB;
@@ -500,12 +500,12 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             }
 
             //Check if it's outside AC.            
-            //float AdotAB, AdotAC;
+            //double AdotAB, AdotAC;
             //Vector3.Dot(ref ab, ref A, out AdotAB);
             //Vector3.Dot(ref ac, ref A, out AdotAC);
             //AdotAB = -AdotAB;
             //AdotAC = -AdotAC;
-            float vb = CdotAB * AdotAC - AdotAB * CdotAC;
+            double vb = CdotAB * AdotAC - AdotAB * CdotAC;
             if (vb <= 0f && AdotAC > 0f && CdotAC < 0f)//Note > instead of >= and < instead of <=; prevents bad denominator
             {
                 //Get rid of B.  Compress C into B.
@@ -521,14 +521,14 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             }
 
             //Check if it's outside BC.
-            //float BdotAB, BdotAC;
+            //double BdotAB, BdotAC;
             //Vector3.Dot(ref ab, ref B, out BdotAB);
             //Vector3.Dot(ref ac, ref B, out BdotAC);
             //BdotAB = -BdotAB;
             //BdotAC = -BdotAC;
-            float va = BdotAB * CdotAC - CdotAB * BdotAC;
-            float d3d4;
-            float d6d5;
+            double va = BdotAB * CdotAC - CdotAB * BdotAC;
+            double d3d4;
+            double d6d5;
             if (va <= 0f && (d3d4 = BdotAC - BdotAB) > 0f && (d6d5 = CdotAB - CdotAC) > 0f)//Note > instead of >= and < instead of <=; prevents bad denominator
             {
                 //Throw away A.  C->A.
@@ -549,7 +549,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
 
             //On the face of the triangle.
-            float denom = 1f / (va + vb + vc);
+            double denom = 1f / (va + vb + vc);
             V = vb * denom;
             W = vc * denom;
             U = 1 - V - W;
@@ -584,11 +584,11 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             PairSimplex minimumSimplex = new PairSimplex();
             point = new Vector3();
-            float minimumDistance = float.MaxValue;
+            double minimumDistance = double.MaxValue;
 
 
             PairSimplex candidate;
-            float candidateDistance;
+            double candidateDistance;
             Vector3 candidatePoint;
             if (TryTetrahedronTriangle(ref A, ref C, ref D,
                                        ref SimplexA.A, ref SimplexA.C, ref SimplexA.D,
@@ -640,7 +640,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             }
 
 
-            if (minimumDistance < float.MaxValue)
+            if (minimumDistance < double.MaxValue)
             {
                 minimumSimplex.LocalTransformB = LocalTransformB;
                 minimumSimplex.previousDistanceToClosest = previousDistanceToClosest;
@@ -655,7 +655,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         private static bool TryTetrahedronTriangle(ref Vector3 A, ref Vector3 B, ref Vector3 C,
                                                    ref Vector3 A1, ref Vector3 B1, ref Vector3 C1,
                                                    ref Vector3 A2, ref Vector3 B2, ref Vector3 C2,
-                                                   float errorTolerance,
+                                                   double errorTolerance,
                                                    ref Vector3 otherPoint, out PairSimplex simplex, out Vector3 point)
         {
             //Note that there may be some extra terms that can be removed from this process.
@@ -671,7 +671,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             Vector3.Subtract(ref C, ref A, out ac);
             Vector3 normal;
             Vector3.Cross(ref ab, ref ac, out normal);
-            float AdotN, ADdotN;
+            double AdotN, ADdotN;
             Vector3 AD;
             Vector3.Subtract(ref otherPoint, ref A, out AD);
             Vector3.Dot(ref A, ref normal, out AdotN);
@@ -686,7 +686,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
                 //Check to see if it's outside A.
                 //TODO: Note that in a boolean-style GJK, it shouldn't be possible to be outside A.
-                float AdotAB, AdotAC;
+                double AdotAB, AdotAC;
                 Vector3.Dot(ref ab, ref A, out AdotAB);
                 Vector3.Dot(ref ac, ref A, out AdotAC);
                 AdotAB = -AdotAB;
@@ -705,7 +705,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
                 //Check to see if it's outside B.
                 //TODO: Note that in a boolean-style GJK, it shouldn't be possible to be outside B.
-                float BdotAB, BdotAC;
+                double BdotAB, BdotAC;
                 Vector3.Dot(ref ab, ref B, out BdotAB);
                 Vector3.Dot(ref ac, ref B, out BdotAC);
                 BdotAB = -BdotAB;
@@ -723,7 +723,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 }
 
                 //Check to see if it's outside AB.
-                float vc = AdotAB * BdotAC - BdotAB * AdotAC;
+                double vc = AdotAB * BdotAC - BdotAB * AdotAC;
                 if (vc <= 0 && AdotAB > 0 && BdotAB < 0) //Note > and < instead of => <=; avoids possibly division by zero
                 {
                     simplex.State = SimplexState.Segment;
@@ -743,7 +743,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
                 //Check to see if it's outside C.
                 //TODO: Note that in a boolean-style GJK, it shouldn't be possible to be outside C.
-                float CdotAB, CdotAC;
+                double CdotAB, CdotAC;
                 Vector3.Dot(ref ab, ref C, out CdotAB);
                 Vector3.Dot(ref ac, ref C, out CdotAC);
                 CdotAB = -CdotAB;
@@ -761,12 +761,12 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 }
 
                 //Check if it's outside AC.            
-                //float AdotAB, AdotAC;
+                //double AdotAB, AdotAC;
                 //Vector3.Dot(ref ab, ref A, out AdotAB);
                 //Vector3.Dot(ref ac, ref A, out AdotAC);
                 //AdotAB = -AdotAB;
                 //AdotAC = -AdotAC;
-                float vb = CdotAB * AdotAC - AdotAB * CdotAC;
+                double vb = CdotAB * AdotAC - AdotAB * CdotAC;
                 if (vb <= 0f && AdotAC > 0f && CdotAC < 0f) //Note > instead of >= and < instead of <=; prevents bad denominator
                 {
                     simplex.State = SimplexState.Segment;
@@ -784,14 +784,14 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 }
 
                 //Check if it's outside BC.
-                //float BdotAB, BdotAC;
+                //double BdotAB, BdotAC;
                 //Vector3.Dot(ref ab, ref B, out BdotAB);
                 //Vector3.Dot(ref ac, ref B, out BdotAC);
                 //BdotAB = -BdotAB;
                 //BdotAC = -BdotAC;
-                float va = BdotAB * CdotAC - CdotAB * BdotAC;
-                float d3d4;
-                float d6d5;
+                double va = BdotAB * CdotAC - CdotAB * BdotAC;
+                double d3d4;
+                double d6d5;
                 if (va <= 0f && (d3d4 = BdotAC - BdotAB) > 0f && (d6d5 = CdotAB - CdotAC) > 0f)//Note > instead of >= and < instead of <=; prevents bad denominator
                 {
                     simplex.State = SimplexState.Segment;
@@ -823,7 +823,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 simplex.SimplexB.B = B2;
                 simplex.SimplexB.C = C2;
                 simplex.State = SimplexState.Triangle;
-                float denom = 1f / (va + vb + vc);
+                double denom = 1f / (va + vb + vc);
                 simplex.W = vc * denom;
                 simplex.V = vb * denom;
                 simplex.U = 1 - simplex.V - simplex.W;
@@ -838,18 +838,18 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         }
 
 
-        internal float errorTolerance;
+        internal double errorTolerance;
         ///<summary>
         /// Gets the error tolerance of the simplex.
         ///</summary>
-        public float ErrorTolerance
+        public double ErrorTolerance
         {
             get
             {
                 return errorTolerance;
             }
         }
-        float previousDistanceToClosest;
+        double previousDistanceToClosest;
         ///<summary>
         /// Adds a new point to the simplex.
         ///</summary>
@@ -868,11 +868,11 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             Vector3 S;
             Vector3.Subtract(ref sa, ref sb, out S);
             //If S is not further towards the origin along negativeDirection than closestPoint, then we're done.
-            float dotS;
+            double dotS;
             Vector3.Dot(ref S, ref negativeDirection, out dotS); //-P * S
-            float distanceToClosest = closestPoint.LengthSquared();
+            double distanceToClosest = closestPoint.LengthSquared();
 
-            float progression = dotS + distanceToClosest;
+            double progression = dotS + distanceToClosest;
             //It's likely that the system is oscillating between two or more states, usually because of a degenerate simplex.
             //Rather than detect specific problem cases, this approach just lets it run and catches whatever falls through.
             //During oscillation, one of the states is usually just BARELY outside of the numerical tolerance.

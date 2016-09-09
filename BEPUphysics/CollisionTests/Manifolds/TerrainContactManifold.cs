@@ -27,7 +27,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
             }
         }
 
-        protected internal override int FindOverlappingTriangles(float dt)
+        protected internal override int FindOverlappingTriangles(double dt)
         {
             BoundingBox boundingBox;
             convex.Shape.GetLocalBoundingBox(ref convex.worldTransform, ref terrain.worldTransform, out boundingBox);
@@ -112,7 +112,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                 {
                     //Found a hit!
                     rayHit.Normal.Normalize();
-                    float dot;
+                    double dot;
                     Vector3.Dot(ref ray.Direction, ref rayHit.Normal, out dot);
 
                     var newContact = new ContactData

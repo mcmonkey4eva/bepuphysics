@@ -15,9 +15,9 @@ namespace BEPUphysics.DeactivationManagement
         private int maximumDeactivationAttemptsPerFrame = 100;
         private int deactivationIslandIndex;
 
-        internal float velocityLowerLimit = .26f;
-        internal float velocityLowerLimitSquared = .26f * .26f;
-        internal float lowVelocityTimeMinimum = 1f;
+        internal double velocityLowerLimit = .26f;
+        internal double velocityLowerLimitSquared = .26f * .26f;
+        internal double lowVelocityTimeMinimum = 1f;
 
         ///<summary>
         /// Gets or sets the velocity under which the deactivation system will consider 
@@ -25,7 +25,7 @@ namespace BEPUphysics.DeactivationManagement
         /// for the LowVelocityTimeMinimum).
         /// Defaults to 0.26.
         ///</summary>
-        public float VelocityLowerLimit
+        public double VelocityLowerLimit
         {
             get
             {
@@ -43,7 +43,7 @@ namespace BEPUphysics.DeactivationManagement
         /// objects to be deactivation candidates (if their velocity stays below the VelocityLowerLimit for the duration).
         /// Defaults to 1.
         /// </summary>
-        public float LowVelocityTimeMinimum
+        public double LowVelocityTimeMinimum
         {
             get
             {
@@ -227,13 +227,13 @@ namespace BEPUphysics.DeactivationManagement
 
         ConcurrentDeque<SimulationIslandConnection> splitAttempts = new ConcurrentDeque<SimulationIslandConnection>();
 
-        static float maximumSplitAttemptsFraction = .01f;
+        static double maximumSplitAttemptsFraction = .01f;
         /// <summary>
         /// Gets or sets the fraction of splits that the deactivation manager will attempt in a single frame.
         /// The total splits queued multiplied by this value results in the number of splits managed.
         /// Defaults to .04f.
         /// </summary>
-        public static float MaximumSplitAttemptsFraction
+        public static double MaximumSplitAttemptsFraction
         {
             get
             {

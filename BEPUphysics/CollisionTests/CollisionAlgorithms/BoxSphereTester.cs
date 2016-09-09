@@ -39,7 +39,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3 offset;
             Vector3.Subtract(ref spherePosition, ref contact.Position, out offset);
-            float offsetLength = offset.LengthSquared();
+            double offsetLength = offset.LengthSquared();
 
             if (offsetLength > (sphere.collisionMargin + CollisionDetectionSettings.maximumContactDistance) * (sphere.collisionMargin + CollisionDetectionSettings.maximumContactDistance))
             {
@@ -49,7 +49,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //Colliding.
             if (offsetLength > Toolbox.Epsilon)
             {
-                offsetLength = (float)Math.Sqrt(offsetLength);
+                offsetLength = (double)Math.Sqrt(offsetLength);
                 //Outside of the box.
                 Vector3.Divide(ref offset, offsetLength, out contact.Normal);
                 contact.PenetrationDepth = sphere.collisionMargin - offsetLength;

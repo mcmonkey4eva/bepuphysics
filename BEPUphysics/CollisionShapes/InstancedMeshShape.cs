@@ -52,13 +52,13 @@ namespace BEPUphysics.CollisionShapes
 #if !WINDOWS
             boundingBox = new BoundingBox();
 #endif
-            float minX = float.MaxValue;
-            float minY = float.MaxValue;
-            float minZ = float.MaxValue;
+            double minX = double.MaxValue;
+            double minY = double.MaxValue;
+            double minZ = double.MaxValue;
 
-            float maxX = -float.MaxValue;
-            float maxY = -float.MaxValue;
-            float maxZ = -float.MaxValue;
+            double maxX = -double.MaxValue;
+            double maxY = -double.MaxValue;
+            double maxZ = -double.MaxValue;
             for (int i = 0; i < triangleMesh.Data.vertices.Length; i++)
             {
                 Vector3 vertex;

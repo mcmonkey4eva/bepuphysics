@@ -39,7 +39,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             info.Contact = ContactManifold.contacts.Elements[index];
             //Find the contact's normal force.
-            float totalNormalImpulse = 0;
+            double totalNormalImpulse = 0;
             info.NormalImpulse = 0;
             for (int i = 0; i < contactConstraint.penetrationConstraints.Count; i++)
             {
@@ -50,7 +50,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                 }
             }
             //Compute friction force.  Since we are using central friction, this is 'faked.'
-            float radius;
+            double radius;
             Vector3.Distance(ref contactConstraint.slidingFriction.manifoldCenter, ref info.Contact.Position, out radius);
             if (totalNormalImpulse > 0)
                 info.FrictionImpulse = (info.NormalImpulse / totalNormalImpulse) * (contactConstraint.slidingFriction.accumulatedImpulse.Length() + contactConstraint.twistFriction.accumulatedImpulse * radius);

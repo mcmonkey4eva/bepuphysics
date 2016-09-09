@@ -35,11 +35,11 @@ namespace BEPUik
             set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
         }
 
-        private float distance;
+        private double distance;
         /// <summary>
         /// Gets or sets the distance that the joint connections should be kept from each other.
         /// </summary>
-        public float Distance
+        public double Distance
         {
             get { return distance; }
             set { distance = Math.Max(0, value); }
@@ -73,7 +73,7 @@ namespace BEPUik
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            float currentDistance = separation.Length();
+            double currentDistance = separation.Length();
 
             //Compute jacobians
             Vector3 linearA;

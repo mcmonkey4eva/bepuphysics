@@ -18,7 +18,7 @@ namespace BEPUutilities.ResourceManagement
         {
             SubPoolIntList = new LockingResourcePool<RawList<int>>();
             SubPoolIntSet = new LockingResourcePool<HashSet<int>>();
-            SubPoolFloatList = new LockingResourcePool<RawList<float>>();
+            SubPooldoubleList = new LockingResourcePool<RawList<double>>();
             SubPoolVectorList = new LockingResourcePool<RawList<Vector3>>();
             SubPoolRayHitList = new LockingResourcePool<RawList<RayHit>>();
 
@@ -27,7 +27,7 @@ namespace BEPUutilities.ResourceManagement
         static LockingResourcePool<RawList<RayHit>> SubPoolRayHitList;
         static LockingResourcePool<RawList<int>> SubPoolIntList;
         static LockingResourcePool<HashSet<int>> SubPoolIntSet;
-        static LockingResourcePool<RawList<float>> SubPoolFloatList;
+        static LockingResourcePool<RawList<double>> SubPooldoubleList;
         static LockingResourcePool<RawList<Vector3>> SubPoolVectorList;
 
         /// <summary>
@@ -90,22 +90,22 @@ namespace BEPUutilities.ResourceManagement
         }
 
         /// <summary>
-        /// Retrieves a float list from the resource pool.
+        /// Retrieves a double list from the resource pool.
         /// </summary>
-        /// <returns>Empty float list.</returns>
-        public static RawList<float> GetFloatList()
+        /// <returns>Empty double list.</returns>
+        public static RawList<double> GetdoubleList()
         {
-            return SubPoolFloatList.Take();
+            return SubPooldoubleList.Take();
         }
 
         /// <summary>
         /// Returns a resource to the pool.
         /// </summary>
         /// <param name="list">List to return.</param>
-        public static void GiveBack(RawList<float> list)
+        public static void GiveBack(RawList<double> list)
         {
             list.Clear();
-            SubPoolFloatList.GiveBack(list);
+            SubPooldoubleList.GiveBack(list);
         }
 
         /// <summary>

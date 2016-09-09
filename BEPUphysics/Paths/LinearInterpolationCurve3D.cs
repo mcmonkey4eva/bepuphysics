@@ -15,7 +15,7 @@ namespace BEPUphysics.Paths
         /// <param name="controlPointIndex">Index of the starting control point of the subinterval.</param>
         /// <param name="weight">Location to evaluate on the subinterval from 0 to 1.</param>
         /// <param name="value">Value at the given location.</param>
-        public override void Evaluate(int controlPointIndex, float weight, out Vector3 value)
+        public override void Evaluate(int controlPointIndex, double weight, out Vector3 value)
         {
             value = Vector3.Lerp(ControlPoints[controlPointIndex].Value, ControlPoints[controlPointIndex + 1].Value, weight);
         }
@@ -88,12 +88,12 @@ namespace BEPUphysics.Paths
 
         //    int index = getPreviousIndex(time);
         //    int nextIndex = Math.Min(index + 1, maxIndex); 
-        //    float denominator = controlPoints[nextIndex].time - controlPoints[index].time;
-        //    float intervalTime;
+        //    double denominator = controlPoints[nextIndex].time - controlPoints[index].time;
+        //    double intervalTime;
         //    if (denominator < Toolbox.epsilon)
         //        intervalTime = 0;
         //    else
-        //        intervalTime = (float)(time - controlPoints[index].time) / denominator;
+        //        intervalTime = (double)(time - controlPoints[index].time) / denominator;
 
 
         //    value = Vector3.Lerp(controlPoints[index].value, controlPoints[nextIndex].value, intervalTime); 

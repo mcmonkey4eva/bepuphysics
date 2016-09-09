@@ -4,7 +4,7 @@ namespace BEPUutilities.DataStructures
 {
     /// <summary>
     /// Special datatype used for heapless lists without unsafe/stackalloc.
-    /// Designed for object types or reference-sized structs (int, float...).
+    /// Designed for object types or reference-sized structs (int, double...).
     /// Stores a maximum of 8 entries.
     /// </summary>
     /// <typeparam name="T">Struct type to use.</typeparam>

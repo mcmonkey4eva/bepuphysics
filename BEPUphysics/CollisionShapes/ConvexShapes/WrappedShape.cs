@@ -213,7 +213,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             var triangles = CommonResources.GetIntList();
             ConvexHullHelper.GetConvexHull(samples, triangles);
 
-            float volume;
+            double volume;
             InertiaHelper.ComputeShapeDistribution(samples, triangles, out center, out volume, out volumeDistribution);
             Volume = volume;
 
@@ -268,11 +268,11 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
             shapes.WrappedList.Elements[0].CollisionShape.GetExtremePoint(direction, ref shapes.WrappedList.Elements[0].Transform, out extremePoint);
-            float maxDot;
+            double maxDot;
             Vector3.Dot(ref extremePoint, ref direction, out maxDot);
             for (int i = 1; i < shapes.WrappedList.Count; i++)
             {
-                float dot;
+                double dot;
                 Vector3 temp;
 
                 shapes.WrappedList.Elements[i].CollisionShape.GetExtremePoint(direction, ref shapes.WrappedList.Elements[i].Transform, out temp);
@@ -292,13 +292,13 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// it is simply an approximation that avoids underestimating.
         /// </summary>
         /// <returns>Maximum radius of the shape.</returns>
-        public float ComputeMaximumRadius()
+        public double ComputeMaximumRadius()
         {
             //This can overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
-            float maxRadius = 0;
+            double maxRadius = 0;
             for (int i = 0; i < shapes.Count; i++)
             {
-                float radius = shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius +
+                double radius = shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius +
                                shapes.WrappedList.Elements[i].Transform.Position.Length();
                 if (radius > maxRadius)
                     maxRadius = radius;
@@ -311,13 +311,13 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// it is simply an approximation that avoids overestimating.
         /// </summary>
         /// <returns>Minimum radius of the shape.</returns>
-        public float ComputeMinimumRadius()
+        public double ComputeMinimumRadius()
         {
             //Could also use the tetrahedron approximation approach.
-            float minRadius = 0;
+            double minRadius = 0;
             for (int i = 0; i < shapes.Count; i++)
             {
-                float radius = shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
+                double radius = shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
                 if (radius < minRadius)
                     minRadius = radius;
             }

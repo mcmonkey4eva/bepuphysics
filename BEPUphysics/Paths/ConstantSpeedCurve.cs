@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="speed">Speed to maintain while traveling around a curve.</param>
         /// <param name="curve">Curve to wrap.</param>
-        protected ConstantSpeedCurve(float speed, Curve<TValue> curve)
+        protected ConstantSpeedCurve(double speed, Curve<TValue> curve)
             : base(curve)
         {
             Speed = speed;
@@ -25,7 +25,7 @@
         /// <param name="curve">Curve to wrap.</param>
         /// <param name="sampleCount">Number of samples to use when constructing the wrapper curve.
         /// More samples increases the accuracy of the speed requirement at the cost of performance.</param>
-        protected ConstantSpeedCurve(float speed, Curve<TValue> curve, int sampleCount)
+        protected ConstantSpeedCurve(double speed, Curve<TValue> curve, int sampleCount)
             : base(curve, sampleCount)
         {
             Speed = speed;
@@ -35,14 +35,14 @@
         /// <summary>
         /// Gets or sets the speed of the curve.
         /// </summary>
-        public float Speed { get; set; }
+        public double Speed { get; set; }
 
         /// <summary>
         /// Gets the desired speed at a given time.
         /// </summary>
         /// <param name="time">Time to check for speed.</param>
         /// <returns>Speed at the given time.</returns>
-        public override float GetSpeedAtCurveTime(double time)
+        public override double GetSpeedAtCurveTime(double time)
         {
             return Speed;
         }

@@ -163,7 +163,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Applies the corrective impulses required by the constraint.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
             Vector3 velocityDifference;
             Vector3.Subtract(ref connectionB.angularVelocity, ref connectionA.angularVelocity, out velocityDifference);
@@ -194,7 +194,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// Initializes the constraint for the current frame.
         /// </summary>
         /// <param name="dt">Time between frames.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             Quaternion quaternionA;
             Quaternion.Multiply(ref connectionA.orientation, ref initialQuaternionConjugateA, out quaternionA);
@@ -205,7 +205,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
             Quaternion.Multiply(ref quaternionA, ref quaternionB, out intermediate);
 
 
-            float angle;
+            double angle;
             Vector3 axis;
             Quaternion.GetAxisAngleFromQuaternion(ref intermediate, out axis, out angle);
 
@@ -213,7 +213,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
             error.Y = axis.Y * angle;
             error.Z = axis.Z * angle;
 
-            float errorReduction;
+            double errorReduction;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
             errorReduction = -errorReduction;
             biasVelocity.X = errorReduction * error.X;
@@ -221,10 +221,10 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
             biasVelocity.Z = errorReduction * error.Z;
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            float length = biasVelocity.LengthSquared();
+            double length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                float multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                double multiplier = maxCorrectiveVelocity / (double) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
                 biasVelocity.Z *= multiplier;

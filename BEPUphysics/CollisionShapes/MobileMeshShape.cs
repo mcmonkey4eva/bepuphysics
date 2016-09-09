@@ -18,12 +18,12 @@ namespace BEPUphysics.CollisionShapes
     ///</summary>
     public class MobileMeshShape : EntityShape
     {
-        private float meshCollisionMargin = CollisionDetectionSettings.DefaultMargin;
+        private double meshCollisionMargin = CollisionDetectionSettings.DefaultMargin;
         /// <summary>
         /// Gets or sets the margin of the mobile mesh to use when colliding with other meshes.
         /// When colliding with non-mesh shapes, the mobile mesh has no margin.
         /// </summary>
-        public float MeshCollisionMargin
+        public double MeshCollisionMargin
         {
             get
             {
@@ -186,7 +186,7 @@ namespace BEPUphysics.CollisionShapes
         /// <param name="sidednessWhenSolid">Triangle sidedness to use when the shape is solid.</param>
         /// <param name="collisionMargin">Collision margin used to expand the mesh triangles.</param>
         /// <param name="volumeDescription">Description of the volume and its distribution in the shape. Assumed to be correct; no processing or validation is performed.</param>
-        public MobileMeshShape(TransformableMeshData meshData, IList<Vector3> hullVertices, MobileMeshSolidity solidity, TriangleSidedness sidednessWhenSolid, float collisionMargin, EntityShapeVolumeDescription volumeDescription)
+        public MobileMeshShape(TransformableMeshData meshData, IList<Vector3> hullVertices, MobileMeshSolidity solidity, TriangleSidedness sidednessWhenSolid, double collisionMargin, EntityShapeVolumeDescription volumeDescription)
         {
             triangleMesh = new TriangleMesh(meshData);
             this.hullVertices = new RawList<Vector3>(hullVertices);
@@ -211,7 +211,7 @@ namespace BEPUphysics.CollisionShapes
         /// Tests to see if a ray's origin is contained within the mesh.
         /// If it is, the hit location is found.
         /// If it isn't, the hit location is still valid if a hit occurred.
-        /// If the origin isn't inside and there was no hit, the hit has a T value of float.MaxValue.
+        /// If the origin isn't inside and there was no hit, the hit has a T value of double.MaxValue.
         /// </summary>
         /// <param name="ray">Ray in the local space of the shape to test.</param>
         /// <param name="hit">The first hit against the mesh, if any.</param>
@@ -220,7 +220,7 @@ namespace BEPUphysics.CollisionShapes
         {
             var overlapList = CommonResources.GetIntList();
             hit = new RayHit();
-            hit.T = float.MaxValue;
+            hit.T = double.MaxValue;
             if (triangleMesh.Tree.GetOverlaps(ray, overlapList))
             {
                 bool minimumClockwise = false;
@@ -230,7 +230,7 @@ namespace BEPUphysics.CollisionShapes
                     triangleMesh.Data.GetTriangle(overlapList[i], out vA, out vB, out vC);
                     bool hitClockwise;
                     RayHit tempHit;
-                    if (Toolbox.FindRayTriangleIntersection(ref ray, float.MaxValue, ref vA, ref vB, ref vC, out hitClockwise, out tempHit) &&
+                    if (Toolbox.FindRayTriangleIntersection(ref ray, double.MaxValue, ref vA, ref vB, ref vC, out hitClockwise, out tempHit) &&
                         tempHit.T < hit.T)
                     {
                         hit = tempHit;
@@ -240,7 +240,7 @@ namespace BEPUphysics.CollisionShapes
                 CommonResources.GiveBack(overlapList);
 
                 //If the mesh is hit from behind by the ray on the first hit, then the ray is inside.
-                return hit.T < float.MaxValue && ((SidednessWhenSolid == TriangleSidedness.Clockwise && !minimumClockwise) || (SidednessWhenSolid == TriangleSidedness.Counterclockwise && minimumClockwise));
+                return hit.T < double.MaxValue && ((SidednessWhenSolid == TriangleSidedness.Clockwise && !minimumClockwise) || (SidednessWhenSolid == TriangleSidedness.Counterclockwise && minimumClockwise));
             }
             CommonResources.GiveBack(overlapList);
             return false;
@@ -250,7 +250,7 @@ namespace BEPUphysics.CollisionShapes
         /// <summary>
         /// The difference in t parameters in a ray cast under which two hits are considered to be redundant.
         /// </summary>
-        public static float MeshHitUniquenessThreshold = .0001f;
+        public static double MeshHitUniquenessThreshold = .0001f;
 
         internal bool IsHitUnique(RawList<RayHit> hits, ref RayHit hit)
         {
@@ -301,13 +301,13 @@ namespace BEPUphysics.CollisionShapes
                 //Identify the first and last hits.
                 int minimum = 0;
                 int maximum = 0;
-                float minimumT = float.MaxValue;
-                float maximumT = -1;
+                double minimumT = double.MaxValue;
+                double maximumT = -1;
                 for (int i = 0; i < hitList.Count; i++)
                 {
                     triangleMesh.Data.GetTriangle(hitList[i], out vA, out vB, out vC);
                     RayHit hit;
-                    if (Toolbox.FindRayTriangleIntersection(ref ray, float.MaxValue, TriangleSidedness.DoubleSided, ref vA, ref vB, ref vC, out hit) &&
+                    if (Toolbox.FindRayTriangleIntersection(ref ray, double.MaxValue, TriangleSidedness.DoubleSided, ref vA, ref vB, ref vC, out hit) &&
                         IsHitUnique(hits, ref hit))
                     {
                         if (hit.T < minimumT)
@@ -437,7 +437,7 @@ namespace BEPUphysics.CollisionShapes
             }
             shapeInformation.Center = new Vector3();
             shapeInformation.VolumeDistribution = new Matrix3x3();
-            float totalWeight = 0;
+            double totalWeight = 0;
             for (int i = 0; i < data.indices.Length; i += 3)
             {
                 //Compute the center contribution.
@@ -449,10 +449,10 @@ namespace BEPUphysics.CollisionShapes
                 Vector3.Subtract(ref vC, ref vA, out vAvC);
                 Vector3 cross;
                 Vector3.Cross(ref vAvB, ref vAvC, out cross);
-                float weight = cross.Length();
+                double weight = cross.Length();
                 totalWeight += weight;
 
-                float perVertexWeight = weight * (1f / 3f);
+                double perVertexWeight = weight * (1f / 3f);
                 shapeInformation.Center += perVertexWeight * (vA + vB + vC);
 
                 //Compute the inertia contribution of this triangle.
@@ -496,11 +496,11 @@ namespace BEPUphysics.CollisionShapes
             var backDirection = new Vector3(o.M13, o.M23, o.M33);
 
             int right = 0, left = 0, up = 0, down = 0, backward = 0, forward = 0;
-            float minX = float.MaxValue, maxX = -float.MaxValue, minY = float.MaxValue, maxY = -float.MaxValue, minZ = float.MaxValue, maxZ = -float.MaxValue;
+            double minX = double.MaxValue, maxX = -double.MaxValue, minY = double.MaxValue, maxY = -double.MaxValue, minZ = double.MaxValue, maxZ = -double.MaxValue;
 
             for (int i = 0; i < hullVertices.Count; i++)
             {
-                float dotX, dotY, dotZ;
+                double dotX, dotY, dotZ;
                 Vector3.Dot(ref rightDirection, ref hullVertices.Elements[i], out dotX);
                 Vector3.Dot(ref upDirection, ref hullVertices.Elements[i], out dotY);
                 Vector3.Dot(ref backDirection, ref hullVertices.Elements[i], out dotZ);
@@ -540,9 +540,9 @@ namespace BEPUphysics.CollisionShapes
             }
 
             //Incorporate the collision margin.
-            Vector3.Multiply(ref rightDirection, meshCollisionMargin / (float)Math.Sqrt(rightDirection.Length()), out rightDirection);
-            Vector3.Multiply(ref upDirection, meshCollisionMargin / (float)Math.Sqrt(upDirection.Length()), out upDirection);
-            Vector3.Multiply(ref backDirection, meshCollisionMargin / (float)Math.Sqrt(backDirection.Length()), out backDirection);
+            Vector3.Multiply(ref rightDirection, meshCollisionMargin / (double)Math.Sqrt(rightDirection.Length()), out rightDirection);
+            Vector3.Multiply(ref upDirection, meshCollisionMargin / (double)Math.Sqrt(upDirection.Length()), out upDirection);
+            Vector3.Multiply(ref backDirection, meshCollisionMargin / (double)Math.Sqrt(backDirection.Length()), out backDirection);
 
             var rightElement = hullVertices.Elements[right];
             var leftElement = hullVertices.Elements[left];

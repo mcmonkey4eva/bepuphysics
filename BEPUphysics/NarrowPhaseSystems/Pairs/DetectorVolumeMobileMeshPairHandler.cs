@@ -64,7 +64,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         RawList<int> overlaps = new RawList<int>(8);
 
-        public override void UpdateCollision(float dt)
+        public override void UpdateCollision(double dt)
         {
             WasContaining = Containing;
             WasTouching = Touching;

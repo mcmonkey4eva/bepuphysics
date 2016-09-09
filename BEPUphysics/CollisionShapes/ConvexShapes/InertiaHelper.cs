@@ -17,7 +17,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// Larger tensors (above 1) improve stiffness of constraints and contacts, while smaller values (towards 1) are closer to 'realistic' behavior.
         /// Defaults to 2.5.
         /// </summary>
-        public static float InertiaTensorScale = 2.5f;
+        public static double InertiaTensorScale = 2.5f;
 
         ///<summary>
         /// Number of samples the system takes along a side of an object's AABB when voxelizing it.
@@ -33,12 +33,12 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="center">Location to use as the center for the purposes of computing the contribution.</param>
         ///<param name="point">Point to compute the contribution of.</param>
         ///<param name="contribution">Contribution of the point.</param>
-        public static void GetPointContribution(float pointWeight, ref Vector3 center, ref Vector3 point, out Matrix3x3 contribution)
+        public static void GetPointContribution(double pointWeight, ref Vector3 center, ref Vector3 point, out Matrix3x3 contribution)
         {
             Vector3.Subtract(ref point, ref center, out point);
-            float xx = pointWeight * point.X * point.X;
-            float yy = pointWeight * point.Y * point.Y;
-            float zz = pointWeight * point.Z * point.Z;
+            double xx = pointWeight * point.X * point.X;
+            double yy = pointWeight * point.Y * point.Y;
+            double zz = pointWeight * point.Z * point.Z;
             contribution.M11 = yy + zz;
             contribution.M22 = xx + zz;
             contribution.M33 = xx + yy;
@@ -110,9 +110,9 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             vertices = new Vector3[GetExpectedVertexCount(subdivisionCount)];
 
             ////Create the regular tetrahedron vertices.
-            //float x = (float)(1 / Math.Sqrt(3));
-            //float z = (float)(-1 / (2 * Math.Sqrt(6)));
-            //vertices[0] = Vector3.Normalize(new Vector3(0, 0, (float)(Math.Sqrt(2.0 / 3.0) + z)));
+            //double x = (double)(1 / Math.Sqrt(3));
+            //double z = (double)(-1 / (2 * Math.Sqrt(6)));
+            //vertices[0] = Vector3.Normalize(new Vector3(0, 0, (double)(Math.Sqrt(2.0 / 3.0) + z)));
             //vertices[1] = Vector3.Normalize(new Vector3(-0.5f * x, -0.5f, z));
             //vertices[2] = Vector3.Normalize(new Vector3(-0.5f * x, 0.5f, z));
             //vertices[3] = Vector3.Normalize(new Vector3(x, 0, z));
@@ -142,10 +142,10 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
 
             //Create the regular icosahedron vertices.
             //Vector3[] vertices = new Vector3[12];
-            var goldenRatio = (1 + (float)Math.Sqrt(5)) / 2;
-            float length = (float)Math.Sqrt(1 + goldenRatio * goldenRatio);
-            float x = 1 / length;
-            float y = goldenRatio / length;
+            var goldenRatio = (1 + (double)Math.Sqrt(5)) / 2;
+            double length = (double)Math.Sqrt(1 + goldenRatio * goldenRatio);
+            double x = 1 / length;
+            double y = goldenRatio / length;
             vertices[0] = new Vector3(0, x, y);
             vertices[1] = new Vector3(0, -x, y);
             vertices[2] = new Vector3(0, x, -y);
@@ -343,7 +343,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="triangleIndices">Groups of 3 indices into the vertices array which represent the triangles of the mesh.</param>
         /// <param name="volume">Volume of the shape.</param>
         /// <param name="volumeDistribution">Distribution of the volume as measured from the computed center.</param>
-        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices, out float volume, out Matrix3x3 volumeDistribution)
+        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices, out double volume, out Matrix3x3 volumeDistribution)
         {
             //TODO: Whole bunch of repeat code here. If you ever need to change this, refactor the two methods to share.
             //Explanation for the tetrahedral integration bits: Explicit Exact Formulas for the 3-D Tetrahedron Inertia Tensor in Terms of its Vertex Coordinates
@@ -353,9 +353,9 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             // [  a  -b' -c' ]
             // [ -b'  b  -a' ]
             // [ -c' -a'  c  ]
-            float a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
+            double a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
 
-            float scaledVolume = 0;
+            double scaledVolume = 0;
             for (int i = 0; i < triangleIndices.Count; i += 3)
             {
                 Vector3 v2 = vertices[triangleIndices[i]];
@@ -363,7 +363,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
                 Vector3 v4 = vertices[triangleIndices[i + 2]];
 
                 //Determinant is 6 * volume.  It's signed, though; the mesh isn't necessarily convex and the origin isn't necessarily in the mesh even if it is convex.
-                float scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
+                double scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
                                                 v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
                                                 v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
 
@@ -380,9 +380,9 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
                 co += scaledTetrahedronVolume * (2 * v2.X * v2.Y + v3.X * v2.Y + v4.X * v2.Y + v2.X * v3.Y + 2 * v3.X * v3.Y + v4.X * v3.Y + v2.X * v4.Y + v3.X * v4.Y + 2 * v4.X * v4.Y);
             }
             volume = scaledVolume / 6;
-            float scaledDensity = 1 / volume;
-            float diagonalFactor = scaledDensity / 60;
-            float offFactor = -scaledDensity / 120;
+            double scaledDensity = 1 / volume;
+            double diagonalFactor = scaledDensity / 60;
+            double offFactor = -scaledDensity / 120;
             a *= diagonalFactor;
             b *= diagonalFactor;
             c *= diagonalFactor;
@@ -404,7 +404,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="center">Computed center of the shape's volume.</param>
         /// <param name="volume">Volume of the shape.</param>
         /// <param name="volumeDistribution">Distribution of the volume as measured from the computed center.</param>
-        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices, out Vector3 center, out float volume, out Matrix3x3 volumeDistribution)
+        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices, out Vector3 center, out double volume, out Matrix3x3 volumeDistribution)
         {
             //Explanation for the tetrahedral integration bits: Explicit Exact Formulas for the 3-D Tetrahedron Inertia Tensor in Terms of its Vertex Coordinates
             //http://www.scipub.org/fulltext/jms2/jms2118-11.pdf
@@ -413,10 +413,10 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             // [  a  -b' -c' ]
             // [ -b'  b  -a' ]
             // [ -c' -a'  c  ]
-            float a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
+            double a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
 
             Vector3 summedCenter = new Vector3();
-            float scaledVolume = 0;
+            double scaledVolume = 0;
             for (int i = 0; i < triangleIndices.Count; i += 3)
             {
                 Vector3 v2 = vertices[triangleIndices[i]];
@@ -424,7 +424,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
                 Vector3 v4 = vertices[triangleIndices[i + 2]];
 
                 //Determinant is 6 * volume.  It's signed, though; the mesh isn't necessarily convex and the origin isn't necessarily in the mesh even if it is convex.
-                float scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
+                double scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
                                                 v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
                                                 v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
 
@@ -461,9 +461,9 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             {
                 Vector3.Multiply(ref summedCenter, 0.25f / scaledVolume, out center);
                 volume = scaledVolume / 6;
-                float scaledDensity = 1 / volume;
-                float diagonalFactor = scaledDensity / 60;
-                float offFactor = -scaledDensity / 120;
+                double scaledDensity = 1 / volume;
+                double diagonalFactor = scaledDensity / 60;
+                double offFactor = -scaledDensity / 120;
                 a *= diagonalFactor;
                 b *= diagonalFactor;
                 c *= diagonalFactor;
@@ -502,7 +502,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
 
         }
 
-        //public static void GetInertiaOffset(Vector3 offset, float mass, out Matrix3x3 additionalInertia)
+        //public static void GetInertiaOffset(Vector3 offset, double mass, out Matrix3x3 additionalInertia)
         //{
         //    additionalInertia.M11 = mass * (offset.Y * offset.Y + offset.Z * offset.Z);
         //    additionalInertia.M12 = -mass * offset.X * offset.Y;
@@ -526,7 +526,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="vertices">Vertices of the convex mesh.</param>
         /// <param name="triangleIndices">Groups of 3 indices into the vertices array which represent the triangles of the convex mesh.</param>
         /// <param name="center">Center of the convex shape.</param>
-        public static float ComputeMinimumRadius(IList<Vector3> vertices, IList<int> triangleIndices, ref Vector3 center)
+        public static double ComputeMinimumRadius(IList<Vector3> vertices, IList<int> triangleIndices, ref Vector3 center)
         {
             //Walk through all of the triangles. Treat them as a bunch of planes which bound the shape.
             //The closest distance on any of those planes to the center is the radius of the largest sphere,
@@ -534,7 +534,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
 
             //While this shares a lot of math with the volume distribution computation (volume of a parallelepiped),
             //it requires that a center be available. So, it's a separate calculation.
-            float minimumDistance = float.MaxValue;
+            double minimumDistance = double.MaxValue;
             for (int i = 0; i < triangleIndices.Count; i += 3)
             {
                 Vector3 v2 = vertices[triangleIndices[i]];
@@ -551,16 +551,16 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
                 Vector3.Cross(ref v2v4, ref v2v3, out normal);
 
                 //Watch out: this could very easily be a degenerate triangle; the sampling approach tends to create them.
-                float lengthSquared = normal.LengthSquared();
+                double lengthSquared = normal.LengthSquared();
                 if (lengthSquared > 1e-10f)
-                    Vector3.Divide(ref normal, (float)Math.Sqrt(lengthSquared), out normal);
+                    Vector3.Divide(ref normal, (double)Math.Sqrt(lengthSquared), out normal);
                 else
                     continue;
 
                 Vector3 fromCenterToPlane;
                 Vector3.Subtract(ref v2, ref center, out fromCenterToPlane);
 
-                float distance;
+                double distance;
                 Vector3.Dot(ref normal, ref fromCenterToPlane, out distance);
                 if (distance < 0)
                     throw new ArgumentException("Invalid distance. Ensure the mesh is convex, has consistent winding, and contains the passed-in center.");

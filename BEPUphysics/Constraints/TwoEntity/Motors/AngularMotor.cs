@@ -17,7 +17,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         private Vector3 accumulatedImpulse;
 
 
-        private float angle;
+        private double angle;
         private Vector3 axis;
         private Vector3 biasVelocity;
         private Matrix3x3 effectiveMassMatrix;
@@ -166,7 +166,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Applies the corrective impulses required by the constraint.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
 #if !WINDOWS
             Vector3 lambda = new Vector3();
@@ -185,12 +185,12 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
             accumulatedImpulse.X += lambda.X;
             accumulatedImpulse.Y += lambda.Y;
             accumulatedImpulse.Z += lambda.Z;
-            float sumLengthSquared = accumulatedImpulse.LengthSquared();
+            double sumLengthSquared = accumulatedImpulse.LengthSquared();
 
             if (sumLengthSquared > maxForceDtSquared)
             {
                 //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                float multiplier = maxForceDt / (float)Math.Sqrt(sumLengthSquared);
+                double multiplier = maxForceDt / (double)Math.Sqrt(sumLengthSquared);
                 accumulatedImpulse.X *= multiplier;
                 accumulatedImpulse.Y *= multiplier;
                 accumulatedImpulse.Z *= multiplier;
@@ -220,12 +220,12 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// Initializes the constraint for the current frame.
         /// </summary>
         /// <param name="dt">Time between frames.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             basis.rotationMatrix = connectionA.orientationMatrix;
             basis.ComputeWorldSpaceAxes();
 
-            float inverseDt = 1 / dt;
+            double inverseDt = 1 / dt;
             if (settings.mode == MotorMode.Servomechanism) //Only need to do the bulk of this work if it's a servo.
             {
 
@@ -249,7 +249,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
                 Quaternion.Concatenate(ref bTargetConjugate, ref connectionB.orientation, out error);
 
 
-                float errorReduction;
+                double errorReduction;
                 settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, inverseDt, out errorReduction, out usedSoftness);
 
                 //Turn this into an axis-angle representation.
@@ -258,7 +258,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
                 //Scale the axis by the desired velocity if the angle is sufficiently large (epsilon).
                 if (angle > Toolbox.BigEpsilon)
                 {
-                    float velocity = -(MathHelper.Min(settings.servo.baseCorrectiveSpeed, angle * inverseDt) + angle * errorReduction);
+                    double velocity = -(MathHelper.Min(settings.servo.baseCorrectiveSpeed, angle * inverseDt) + angle * errorReduction);
 
                     biasVelocity.X = axis.X * velocity;
                     biasVelocity.Y = axis.Y * velocity;
@@ -266,10 +266,10 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
 
 
                     //Ensure that the corrective velocity doesn't exceed the max.
-                    float length = biasVelocity.LengthSquared();
+                    double length = biasVelocity.LengthSquared();
                     if (length > settings.servo.maxCorrectiveVelocitySquared)
                     {
-                        float multiplier = settings.servo.maxCorrectiveVelocity / (float)Math.Sqrt(length);
+                        double multiplier = settings.servo.maxCorrectiveVelocity / (double)Math.Sqrt(length);
                         biasVelocity.X *= multiplier;
                         biasVelocity.Y *= multiplier;
                         biasVelocity.Z *= multiplier;

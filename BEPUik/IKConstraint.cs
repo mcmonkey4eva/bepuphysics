@@ -4,9 +4,9 @@ namespace BEPUik
 {
     public abstract class IKConstraint
     {
-        protected float softness;
+        protected double softness;
 
-        protected float errorCorrectionFactor;
+        protected double errorCorrectionFactor;
 
 
         /// <summary>
@@ -15,9 +15,9 @@ namespace BEPUik
         /// <remarks>
         /// This is used over independent coefficients because IK usages of the constraints don't really vary in behavior, just strength.
         /// </remarks>
-        private const float StiffnessOverDamping = 0.25f;
+        private const double StiffnessOverDamping = 0.25f;
 
-        private float rigidity = 16;
+        private double rigidity = 16;
         /// <summary>
         /// Gets the rigidity of the constraint. Higher values correspond to more rigid constraints, lower values to less rigid constraints. Must be positive.
         /// </summary>
@@ -27,7 +27,7 @@ namespace BEPUik
         /// In other words, modifying rigidity without modifying the effective mass of the system results in a variable damping ratio. 
         /// This isn't a huge problem in practice- there is a massive ultra-damping hack in IK bone position integration that make a little physical deviation or underdamping irrelevant.
         /// </remarks>
-        public float Rigidity
+        public double Rigidity
         {
             get
             {
@@ -41,14 +41,14 @@ namespace BEPUik
             }
         }
 
-        protected float maximumImpulse;
-        protected float maximumImpulseSquared;
-        protected float maximumForce = float.MaxValue;
+        protected double maximumImpulse;
+        protected double maximumImpulseSquared;
+        protected double maximumForce = double.MaxValue;
 
         /// <summary>
         /// Gets or sets the maximum force that the constraint can apply.
         /// </summary>
-        public float MaximumForce
+        public double MaximumForce
         {
             get { return maximumForce; }
             set
@@ -62,15 +62,15 @@ namespace BEPUik
         /// </summary>
         /// <param name="dt">Time step duration.</param>
         /// <param name="updateRate">Inverse time step duration.</param>
-        protected internal void Preupdate(float dt, float updateRate)
+        protected internal void Preupdate(double dt, double updateRate)
         {
-            float stiffness = StiffnessOverDamping * rigidity;
-            float damping = rigidity;
-            float multiplier = 1 / (dt * stiffness + damping);
+            double stiffness = StiffnessOverDamping * rigidity;
+            double damping = rigidity;
+            double multiplier = 1 / (dt * stiffness + damping);
             errorCorrectionFactor = stiffness * multiplier;
             softness = updateRate * multiplier;
             maximumImpulse = maximumForce * dt;
-            maximumImpulseSquared = Math.Min(float.MaxValue, maximumImpulse * maximumImpulse);
+            maximumImpulseSquared = Math.Min(double.MaxValue, maximumImpulse * maximumImpulse);
 
         }
 

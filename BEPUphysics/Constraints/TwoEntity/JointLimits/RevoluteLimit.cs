@@ -26,12 +26,12 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <summary>
         /// Naximum angle that entities can twist.
         /// </summary>
-        protected float maximumAngle;
+        protected double maximumAngle;
 
         /// <summary>
         /// Minimum angle that entities can twist.
         /// </summary>
-        protected float minimumAngle;
+        protected double minimumAngle;
 
         private Vector3 worldTestAxis;
         private Vector2 velocityToImpulse;
@@ -57,7 +57,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
         /// Will also be used as the base rotation axis representing 0 degrees.</param>
         /// <param name="minimumAngle">Minimum twist angle allowed.</param>
         /// <param name="maximumAngle">Maximum twist angle allowed.</param>
-        public RevoluteLimit(Entity connectionA, Entity connectionB, Vector3 limitedAxis, Vector3 testAxis, float minimumAngle, float maximumAngle)
+        public RevoluteLimit(Entity connectionA, Entity connectionB, Vector3 limitedAxis, Vector3 testAxis, double minimumAngle, double maximumAngle)
         {
             ConnectionA = connectionA;
             ConnectionB = connectionB;
@@ -113,7 +113,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <summary>
         /// Gets or sets the maximum angle that entities can twist.
         /// </summary>
-        public float MaximumAngle
+        public double MaximumAngle
         {
             get { return maximumAngle; }
             set
@@ -129,7 +129,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <summary>
         /// Gets or sets the minimum angle that entities can twist.
         /// </summary>
-        public float MinimumAngle
+        public double MinimumAngle
         {
             get { return minimumAngle; }
             set
@@ -169,7 +169,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
             {
                 if (isLimitActive)
                 {
-                    float velocityA, velocityB;
+                    double velocityA, velocityB;
                     Vector2 toReturn = Vector2.Zero;
                     if (minIsActive)
                     {
@@ -282,12 +282,12 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
         /// </summary>
         /// <returns>The rough applied impulse magnitude.</returns>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
-            float lambda;
-            float lambdaTotal = 0;
-            float velocityA, velocityB;
-            float previousAccumulatedImpulse;
+            double lambda;
+            double lambdaTotal = 0;
+            double velocityA, velocityB;
+            double previousAccumulatedImpulse;
             if (minIsActive)
             {
                 //Find the velocity contribution from each connection
@@ -357,7 +357,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
         /// Performs the frame's configuration step.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             //Transform the axes into world space.
             basis.rotationMatrix = connectionA.orientationMatrix;
@@ -374,12 +374,12 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
             Matrix3x3.Transform(ref basis.xAxis, ref rotation, out maxPlaneNormal);
 
             //Compute the errors along the two normals.
-            float planePositionMin, planePositionMax;
+            double planePositionMin, planePositionMax;
             Vector3.Dot(ref minPlaneNormal, ref worldTestAxis, out planePositionMin);
             Vector3.Dot(ref maxPlaneNormal, ref worldTestAxis, out planePositionMax);
 
 
-            float span = GetDistanceFromMinimum(maximumAngle);
+            double span = GetDistanceFromMinimum(maximumAngle);
 
             //Early out and compute the determine the plane normal.
             if (span >= MathHelper.Pi)
@@ -464,7 +464,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
 
             //****** VELOCITY BIAS ******//
             //Compute the correction velocity
-            float errorReduction;
+            double errorReduction;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
 
             //Compute the jacobians
@@ -503,8 +503,8 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
                 biasVelocity.X = MathHelper.Min(MathHelper.Max(0, error.X - margin) * errorReduction, maxCorrectiveVelocity);
                 if (bounciness > 0)
                 {
-                    float relativeVelocity;
-                    float dot;
+                    double relativeVelocity;
+                    double dot;
                     //Find the velocity contribution from each connection
                     Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMinA, out relativeVelocity);
                     Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMinB, out dot);
@@ -520,9 +520,9 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
                     //Find the velocity contribution from each connection
                     if (maxIsActive)
                     {
-                        float relativeVelocity;
+                        double relativeVelocity;
                         Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMaxA, out relativeVelocity);
-                        float dot;
+                        double dot;
                         Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMaxB, out dot);
                         relativeVelocity += dot;
                         biasVelocity.Y = MathHelper.Max(biasVelocity.Y, ComputeBounceVelocity(-relativeVelocity));
@@ -533,8 +533,8 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
 
             //****** EFFECTIVE MASS MATRIX ******//
             //Connection A's contribution to the mass matrix
-            float minEntryA, minEntryB;
-            float maxEntryA, maxEntryB;
+            double minEntryA, minEntryB;
+            double maxEntryA, maxEntryB;
             Vector3 transformedAxis;
             if (connectionA.isDynamic)
             {
@@ -630,7 +630,7 @@ namespace BEPUphysics.Constraints.TwoEntity.JointLimits
             }
         }
 
-        private float GetDistanceFromMinimum(float angle)
+        private double GetDistanceFromMinimum(double angle)
         {
             if (minimumAngle > 0)
             {

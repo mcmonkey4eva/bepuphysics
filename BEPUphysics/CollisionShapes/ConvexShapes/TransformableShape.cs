@@ -98,7 +98,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             var triangles = CommonResources.GetIntList();
             ConvexHullHelper.GetConvexHull(samples, triangles);
 
-            float volume;
+            double volume;
             InertiaHelper.ComputeShapeDistribution(samples, triangles, out volume, out volumeDistribution);
             Volume = volume;
 
@@ -132,7 +132,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// it is simply an approximation that avoids underestimating.
         /// </summary>
         /// <returns>Maximum radius of the shape.</returns>
-        public float ComputeMaximumRadius()
+        public double ComputeMaximumRadius()
         {
             //This will overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
             RigidTransform identity = RigidTransform.Identity;

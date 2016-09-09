@@ -13,13 +13,13 @@ namespace BEPUphysics.CollisionShapes
     ///</summary>
     public class TerrainShape : CollisionShape
     {
-        private float[,] heights;
+        private double[,] heights;
         //note: changing heights in array does not fire OnShapeChanged automatically.
         //Need to notify parent manually if you do it.
         ///<summary>
         /// Gets or sets the height field of the terrain shape.
         ///</summary>
-        public float[,] Heights
+        public double[,] Heights
         {
             get
             {
@@ -57,7 +57,7 @@ namespace BEPUphysics.CollisionShapes
         ///<param name="heights">Heights array used for the shape.</param>
         ///<param name="triangleOrganization">Triangle organization of each quad.</param>
         ///<exception cref="ArgumentException">Thrown if the heights array has less than 2x2 vertices.</exception>
-        public TerrainShape(float[,] heights, QuadTriangleOrganization triangleOrganization)
+        public TerrainShape(double[,] heights, QuadTriangleOrganization triangleOrganization)
         {
             if (heights.GetLength(0) <= 1 || heights.GetLength(1) <= 1)
             {
@@ -71,7 +71,7 @@ namespace BEPUphysics.CollisionShapes
         /// Constructs a TerrainShape.
         ///</summary>
         ///<param name="heights">Heights array used for the shape.</param>
-        public TerrainShape(float[,] heights)
+        public TerrainShape(double[,] heights)
             : this(heights, QuadTriangleOrganization.BottomLeftUpperRight)
         {
         }
@@ -88,9 +88,9 @@ namespace BEPUphysics.CollisionShapes
 #if !WINDOWS
             boundingBox = new BoundingBox();
 #endif
-            float minX = float.MaxValue, maxX = -float.MaxValue,
-                  minY = float.MaxValue, maxY = -float.MaxValue,
-                  minZ = float.MaxValue, maxZ = -float.MaxValue;
+            double minX = double.MaxValue, maxX = -double.MaxValue,
+                  minY = double.MaxValue, maxY = -double.MaxValue,
+                  minZ = double.MaxValue, maxZ = -double.MaxValue;
             Vector3 minXvertex = new Vector3(),
                     maxXvertex = new Vector3(),
                     minYvertex = new Vector3(),
@@ -157,7 +157,7 @@ namespace BEPUphysics.CollisionShapes
         ///<param name="transform">Transform to apply to the terrain shape during the test.</param>
         ///<param name="hit">Hit data of the ray cast, if any.</param>
         ///<returns>Whether or not the ray hit the transformed terrain shape.</returns>
-        public bool RayCast(ref Ray ray, float maximumLength, ref AffineTransform transform, out RayHit hit)
+        public bool RayCast(ref Ray ray, double maximumLength, ref AffineTransform transform, out RayHit hit)
         {
             return RayCast(ref ray, maximumLength, ref transform, TriangleSidedness.Counterclockwise, out hit);
         }
@@ -170,7 +170,7 @@ namespace BEPUphysics.CollisionShapes
         ///<param name="sidedness">Sidedness of the triangles to use when raycasting.</param>
         ///<param name="hit">Hit data of the ray cast, if any.</param>
         ///<returns>Whether or not the ray hit the transformed terrain shape.</returns>
-        public bool RayCast(ref Ray ray, float maximumLength, ref AffineTransform transform, TriangleSidedness sidedness, out RayHit hit)
+        public bool RayCast(ref Ray ray, double maximumLength, ref AffineTransform transform, TriangleSidedness sidedness, out RayHit hit)
         {
             hit = new RayHit();
             //Put the ray into local space.
@@ -183,18 +183,18 @@ namespace BEPUphysics.CollisionShapes
             //Use rasterizey traversal.
             //The origin is at 0,0,0 and the map goes +X, +Y, +Z.
             //if it's before the origin and facing away, or outside the max and facing out, early out.
-            float maxX = heights.GetLength(0) - 1;
-            float maxZ = heights.GetLength(1) - 1;
+            double maxX = heights.GetLength(0) - 1;
+            double maxZ = heights.GetLength(1) - 1;
 
             Vector3 progressingOrigin = localRay.Position;
-            float distance = 0;
+            double distance = 0;
             //Check the outside cases first.
             if (progressingOrigin.X < 0)
             {
                 if (localRay.Direction.X > 0)
                 {
                     //Off the left side.
-                    float timeToMinX = -progressingOrigin.X / localRay.Direction.X;
+                    double timeToMinX = -progressingOrigin.X / localRay.Direction.X;
                     distance += timeToMinX;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinX, out increment);
@@ -208,7 +208,7 @@ namespace BEPUphysics.CollisionShapes
                 if (localRay.Direction.X < 0)
                 {
                     //Off the left side.
-                    float timeToMinX = -(progressingOrigin.X - maxX) / localRay.Direction.X;
+                    double timeToMinX = -(progressingOrigin.X - maxX) / localRay.Direction.X;
                     distance += timeToMinX;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinX, out increment);
@@ -222,7 +222,7 @@ namespace BEPUphysics.CollisionShapes
             {
                 if (localRay.Direction.Z > 0)
                 {
-                    float timeToMinZ = -progressingOrigin.Z / localRay.Direction.Z;
+                    double timeToMinZ = -progressingOrigin.Z / localRay.Direction.Z;
                     distance += timeToMinZ;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinZ, out increment);
@@ -235,7 +235,7 @@ namespace BEPUphysics.CollisionShapes
             {
                 if (localRay.Direction.Z < 0)
                 {
-                    float timeToMinZ = -(progressingOrigin.Z - maxZ) / localRay.Direction.Z;
+                    double timeToMinZ = -(progressingOrigin.Z - maxZ) / localRay.Direction.Z;
                     distance += timeToMinZ;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinZ, out increment);
@@ -285,8 +285,8 @@ namespace BEPUphysics.CollisionShapes
 
                 //Don't bother doing ray intersection tests if the ray can't intersect it.
 
-                float highest = v1.Y;
-                float lowest = v1.Y;
+                double highest = v1.Y;
+                double lowest = v1.Y;
                 if (v2.Y > highest)
                     highest = v2.Y;
                 else if (v2.Y < lowest)
@@ -353,21 +353,21 @@ namespace BEPUphysics.CollisionShapes
 
                 //Move to the next cell.
 
-                float timeToX;
+                double timeToX;
                 if (localRay.Direction.X < 0)
                     timeToX = -(progressingOrigin.X - xCell) / localRay.Direction.X;
                 else if (localRay.Direction.X > 0)
                     timeToX = (xCell + 1 - progressingOrigin.X) / localRay.Direction.X;
                 else
-                    timeToX = float.MaxValue;
+                    timeToX = double.MaxValue;
 
-                float timeToZ;
+                double timeToZ;
                 if (localRay.Direction.Z < 0)
                     timeToZ = -(progressingOrigin.Z - zCell) / localRay.Direction.Z;
                 else if (localRay.Direction.Z > 0)
                     timeToZ = (zCell + 1 - progressingOrigin.Z) / localRay.Direction.Z;
                 else
-                    timeToZ = float.MaxValue;
+                    timeToZ = double.MaxValue;
 
                 //Move to the next cell.
                 if (timeToX < timeToZ)
@@ -460,10 +460,10 @@ namespace BEPUphysics.CollisionShapes
         public void GetLocalNormal(int columnIndex, int rowIndex, out Vector3 normal)
         {
 
-            float topHeight = heights[columnIndex, Math.Min(rowIndex + 1, heights.GetLength(1) - 1)];
-            float bottomHeight = heights[columnIndex, Math.Max(rowIndex - 1, 0)];
-            float rightHeight = heights[Math.Min(columnIndex + 1, heights.GetLength(0) - 1), rowIndex];
-            float leftHeight = heights[Math.Max(columnIndex - 1, 0), rowIndex];
+            double topHeight = heights[columnIndex, Math.Min(rowIndex + 1, heights.GetLength(1) - 1)];
+            double bottomHeight = heights[columnIndex, Math.Max(rowIndex - 1, 0)];
+            double rightHeight = heights[Math.Min(columnIndex + 1, heights.GetLength(0) - 1), rowIndex];
+            double leftHeight = heights[Math.Max(columnIndex - 1, 0), rowIndex];
 
             //Since the horizontal offsets are known to be 1 in local space, we can omit quite a few operations compared to a full Vector3 and cross product.
 
@@ -473,13 +473,13 @@ namespace BEPUphysics.CollisionShapes
             //the result is then:
             //Vector3.Cross(bottomToTop, leftToRight);
             //Which is:
-            //float resultX = bottomToTop.Y * leftToRight.Z - bottomToTop.Z * leftToRight.Y;
-            //float resultY = bottomToTop.Z * leftToRight.X - bottomToTop.X * leftToRight.Z;
-            //float resultZ = bottomToTop.X * leftToRight.Y - bottomToTop.Y * leftToRight.X;
+            //double resultX = bottomToTop.Y * leftToRight.Z - bottomToTop.Z * leftToRight.Y;
+            //double resultY = bottomToTop.Z * leftToRight.X - bottomToTop.X * leftToRight.Z;
+            //double resultZ = bottomToTop.X * leftToRight.Y - bottomToTop.Y * leftToRight.X;
             //Which becomes:
-            //float resultX = bottomToTop.Y * 0 - 2 * leftToRight.Y;
-            //float resultY = 2 * 2 - 0 * 0;
-            //float resultZ = 0 * leftToRight.Y - bottomToTop.Y * 2;
+            //double resultX = bottomToTop.Y * 0 - 2 * leftToRight.Y;
+            //double resultY = 2 * 2 - 0 * 0;
+            //double resultZ = 0 * leftToRight.Y - bottomToTop.Y * 2;
             //Which becomes:
             normal.X = rightHeight - leftHeight;
             normal.Y = 2;
@@ -506,11 +506,11 @@ namespace BEPUphysics.CollisionShapes
                 for (int j = minY; j <= maxY; j++)
                 {
                     //Before adding a triangle to the list, make sure the object isn't too high or low from the quad.
-                    float highest, lowest;
-                    float y1 = heights[i, j];
-                    float y2 = heights[i + 1, j];
-                    float y3 = heights[i, j + 1];
-                    float y4 = heights[i + 1, j + 1];
+                    double highest, lowest;
+                    double y1 = heights[i, j];
+                    double y2 = heights[i + 1, j];
+                    double y3 = heights[i, j + 1];
+                    double y4 = heights[i + 1, j + 1];
 
                     highest = y1;
                     lowest = y1;

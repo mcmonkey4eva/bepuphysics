@@ -124,12 +124,12 @@ namespace BEPUphysics.BroadPhaseEntries
         }
 
 
-        internal float thickness;
+        internal double thickness;
         /// <summary>
         /// Gets or sets the thickness of the terrain.  This defines how far below the triangles of the terrain's surface the terrain 'body' extends.
         /// Anything within the body of the terrain will be pulled back up to the surface.
         /// </summary>
-        public float Thickness
+        public double Thickness
         {
             get
             {
@@ -183,7 +183,7 @@ namespace BEPUphysics.BroadPhaseEntries
         ///</summary>
         ///<param name="heights">Height data to use to create the TerrainShape.</param>
         ///<param name="worldTransform">Transform to use for the terrain.</param>
-        public Terrain(float[,] heights, AffineTransform worldTransform)
+        public Terrain(double[,] heights, AffineTransform worldTransform)
             : this(new TerrainShape(heights), worldTransform)
         {
         }
@@ -220,7 +220,7 @@ namespace BEPUphysics.BroadPhaseEntries
         /// <param name="maximumLength">Maximum length, in units of the ray's direction's length, to test.</param>
         /// <param name="rayHit">Hit location of the ray on the entry, if any.</param>
         /// <returns>Whether or not the ray hit the entry.</returns>
-        public override bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
+        public override bool RayCast(Ray ray, double maximumLength, out RayHit rayHit)
         {
             return Shape.RayCast(ref ray, maximumLength, ref worldTransform, out rayHit);
         }
@@ -242,7 +242,7 @@ namespace BEPUphysics.BroadPhaseEntries
             var hitElements = new QuickList<int>(BufferPools<int>.Thread);
             if (Shape.GetOverlaps(localSpaceBoundingBox, ref hitElements))
             {
-                hit.T = float.MaxValue;
+                hit.T = double.MaxValue;
                 for (int i = 0; i < hitElements.Count; i++)
                 {
                     Shape.GetTriangle(hitElements.Elements[i], ref worldTransform, out tri.vA, out tri.vB, out tri.vC);
@@ -254,13 +254,13 @@ namespace BEPUphysics.BroadPhaseEntries
                     Vector3.Subtract(ref tri.vB, ref center, out tri.vB);
                     Vector3.Subtract(ref tri.vC, ref center, out tri.vC);
                     tri.MaximumRadius = tri.vA.LengthSquared();
-                    float radius = tri.vB.LengthSquared();
+                    double radius = tri.vB.LengthSquared();
                     if (tri.MaximumRadius < radius)
                         tri.MaximumRadius = radius;
                     radius = tri.vC.LengthSquared();
                     if (tri.MaximumRadius < radius)
                         tri.MaximumRadius = radius;
-                    tri.MaximumRadius = (float)Math.Sqrt(tri.MaximumRadius);
+                    tri.MaximumRadius = (double)Math.Sqrt(tri.MaximumRadius);
                     tri.collisionMargin = 0;
                     var triangleTransform = new RigidTransform { Orientation = Quaternion.Identity, Position = center };
                     RayHit tempHit;
@@ -272,7 +272,7 @@ namespace BEPUphysics.BroadPhaseEntries
                 tri.MaximumRadius = 0;
                 PhysicsThreadResources.GiveBack(tri);
                 hitElements.Dispose();
-                return hit.T != float.MaxValue;
+                return hit.T != double.MaxValue;
             }
             PhysicsThreadResources.GiveBack(tri);
             hitElements.Dispose();

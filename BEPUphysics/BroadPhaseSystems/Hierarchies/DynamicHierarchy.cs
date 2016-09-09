@@ -326,7 +326,7 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
         /// Useful for comparing against other trees.
         /// </summary>
         /// <returns>Cost of the tree.</returns>
-        public float MeasureCostMetric()
+        public double MeasureCostMetric()
         {
             if (root != null)
             {

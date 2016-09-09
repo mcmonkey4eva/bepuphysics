@@ -34,7 +34,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Construct a TriangleCollidable from the static mesh.
             var toReturn = PhysicsResources.GetTriangleCollidable();
             Vector3 terrainUp = new Vector3(mesh.worldTransform.LinearTransform.M21, mesh.worldTransform.LinearTransform.M22, mesh.worldTransform.LinearTransform.M23);
-            float dot;
+            double dot;
             Vector3 AB, AC, normal;
             var shape = toReturn.Shape;
             mesh.Shape.GetTriangle(index, ref mesh.worldTransform, out shape.vA, out shape.vB, out shape.vC);
@@ -68,7 +68,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-        protected override void ConfigureCollidable(TriangleEntry entry, float dt)
+        protected override void ConfigureCollidable(TriangleEntry entry, double dt)
         {
 
         }
@@ -113,7 +113,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
 
 
-        protected override void UpdateContainedPairs(float dt)
+        protected override void UpdateContainedPairs(double dt)
         {
             var overlappedElements = new QuickList<int>(BufferPools<int>.Thread);
             BoundingBox localBoundingBox;

@@ -223,7 +223,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// Performs the frame's configuration step.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             Matrix3x3.Transform(ref localAxisA, ref connectionA.orientationMatrix, out worldAxisA);
             Matrix3x3.Transform(ref localAxisB, ref connectionB.orientationMatrix, out worldAxisB);
@@ -237,7 +237,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
 
             Vector3.Dot(ref error, ref worldConstrainedAxis1, out this.error.X);
             Vector3.Dot(ref error, ref worldConstrainedAxis2, out this.error.Y);
-            float errorReduction;
+            double errorReduction;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
             errorReduction = -errorReduction;
             biasVelocity.X = errorReduction * this.error.X;
@@ -245,10 +245,10 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
 
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            float length = biasVelocity.LengthSquared();
+            double length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                float multiplier = maxCorrectiveVelocity / (float)Math.Sqrt(length);
+                double multiplier = maxCorrectiveVelocity / (double)Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
             }
@@ -321,7 +321,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
         /// </summary>
         /// <returns>The rough applied impulse magnitude.</returns>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
             // lambda = -mc * (Jv + b)
             // P = JT * lambda

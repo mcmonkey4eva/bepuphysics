@@ -10,18 +10,18 @@ namespace BEPUutilities
         /// <summary>
         /// X component of the vector.
         /// </summary>
-        public float X;
+        public double X;
         /// <summary>
         /// Y component of the vector.
         /// </summary>
-        public float Y;
+        public double Y;
 
         /// <summary>
         /// Constructs a new two dimensional vector.
         /// </summary>
         /// <param name="x">X component of the vector.</param>
         /// <param name="y">Y component of the vector.</param>
-        public Vector2(float x, float y)
+        public Vector2(double x, double y)
         {
             this.X = x;
             this.Y = y;
@@ -31,7 +31,7 @@ namespace BEPUutilities
         /// Computes the squared length of the vector.
         /// </summary>
         /// <returns>Squared length of the vector.</returns>
-        public float LengthSquared()
+        public double LengthSquared()
         {
             return X * X + Y * Y;
         }
@@ -40,9 +40,9 @@ namespace BEPUutilities
         /// Computes the length of the vector.
         /// </summary>
         /// <returns>Length of the vector.</returns>
-        public float Length()
+        public double Length()
         {
-            return (float)System.Math.Sqrt(X * X + Y * Y);
+            return (double)System.Math.Sqrt(X * X + Y * Y);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace BEPUutilities
         /// <param name="v">Vector to scale.</param>
         /// <param name="scale">Amount to scale.</param>
         /// <param name="result">Scaled vector.</param>
-        public static void Multiply(ref Vector2 v, float scale, out Vector2 result)
+        public static void Multiply(ref Vector2 v, double scale, out Vector2 result)
         {
             result.X = v.X * scale;
             result.Y = v.Y * scale;
@@ -108,9 +108,9 @@ namespace BEPUutilities
         /// <param name="v">Vector to divide.</param>
         /// <param name="divisor">Value to divide the vector's components.</param>
         /// <param name="result">Result of the division.</param>
-        public static void Divide(ref Vector2 v, float divisor, out Vector2 result)
+        public static void Divide(ref Vector2 v, double divisor, out Vector2 result)
         {
-            float inverse = 1 / divisor;
+            double inverse = 1 / divisor;
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
         }
@@ -121,7 +121,7 @@ namespace BEPUutilities
         /// <param name="a">First vector of the dot product.</param>
         /// <param name="b">Second vector of the dot product.</param>
         /// <param name="dot">Dot product of the two vectors.</param>
-        public static void Dot(ref Vector2 a, ref Vector2 b, out float dot)
+        public static void Dot(ref Vector2 a, ref Vector2 b, out double dot)
         {
             dot = a.X * b.X + a.Y * b.Y;
         }
@@ -132,7 +132,7 @@ namespace BEPUutilities
         /// <param name="a">First vector of the dot product.</param>
         /// <param name="b">Second vector of the dot product.</param>
         /// <returns>Dot product of the two vectors.</returns>
-        public static float Dot(Vector2 a, Vector2 b)
+        public static double Dot(Vector2 a, Vector2 b)
         {
             return a.X * b.X + a.Y * b.Y;
         }
@@ -184,7 +184,7 @@ namespace BEPUutilities
         /// <param name="result">Normalized vector.</param>
         public static void Normalize(ref Vector2 v, out Vector2 result)
         {
-            float inverse = (float)(1 / System.Math.Sqrt(v.X * v.X + v.Y * v.Y));
+            double inverse = (double)(1 / System.Math.Sqrt(v.X * v.X + v.Y * v.Y));
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
         }
@@ -285,7 +285,7 @@ namespace BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            float inverse = (float)(1 / System.Math.Sqrt(X * X + Y * Y));
+            double inverse = (double)(1 / System.Math.Sqrt(X * X + Y * Y));
             X *= inverse;
             Y *= inverse;
         }
@@ -296,7 +296,7 @@ namespace BEPUutilities
         /// <param name="v">Vector to scale.</param>
         /// <param name="f">Amount to scale.</param>
         /// <returns>Scaled vector.</returns>
-        public static Vector2 operator *(Vector2 v, float f)
+        public static Vector2 operator *(Vector2 v, double f)
         {
             Vector2 toReturn;
             toReturn.X = v.X * f;
@@ -309,7 +309,7 @@ namespace BEPUutilities
         /// <param name="v">Vector to scale.</param>
         /// <param name="f">Amount to scale.</param>
         /// <returns>Scaled vector.</returns>
-        public static Vector2 operator *(float f, Vector2 v)
+        public static Vector2 operator *(double f, Vector2 v)
         {
             Vector2 toReturn;
             toReturn.X = v.X * f;
@@ -336,7 +336,7 @@ namespace BEPUutilities
         /// <param name="v">Vector to divide.</param>
         /// <param name="f">Amount to divide.</param>
         /// <returns>Divided vector.</returns>
-        public static Vector2 operator /(Vector2 v, float f)
+        public static Vector2 operator /(Vector2 v, double f)
         {
             Vector2 toReturn;
             f = 1 / f;

@@ -204,16 +204,16 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
 
         /// <summary>
         /// Calculates necessary information for velocity solving.
-        /// Called by preStep(float dt)
+        /// Called by preStep(double dt)
         /// </summary>
         /// <param name="dt">Time in seconds since the last update.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             Matrix3x3.Transform(ref localAnchorA, ref connectionA.orientationMatrix, out worldOffsetA);
             Matrix3x3.Transform(ref localAnchorB, ref connectionB.orientationMatrix, out worldOffsetB);
 
 
-            float errorReductionParameter;
+            double errorReductionParameter;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReductionParameter, out softness);
 
             //Mass Matrix
@@ -265,10 +265,10 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
             Vector3.Multiply(ref error, -errorReductionParameter, out biasVelocity);
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            float length = biasVelocity.LengthSquared();
+            double length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                float multiplier = maxCorrectiveVelocity / (float)Math.Sqrt(length);
+                double multiplier = maxCorrectiveVelocity / (double)Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
                 biasVelocity.Z *= multiplier;
@@ -315,7 +315,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// Calculates and applies corrective impulses.
         /// Called automatically by space.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
 #if !WINDOWS
             Vector3 lambda = new Vector3();

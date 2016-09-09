@@ -10,7 +10,7 @@
         /// Updates the object during force application.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
-        void Update(float dt);
+        void Update(double dt);
 
     }
 }

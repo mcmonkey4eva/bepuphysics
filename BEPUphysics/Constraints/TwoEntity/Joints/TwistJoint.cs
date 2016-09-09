@@ -12,16 +12,16 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
     public class TwistJoint : Joint, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
         private Vector3 aLocalAxisY, aLocalAxisZ;
-        private float accumulatedImpulse;
+        private double accumulatedImpulse;
         private Vector3 bLocalAxisY;
-        private float biasVelocity;
+        private double biasVelocity;
         private Vector3 jacobianA, jacobianB;
-        private float error;
+        private double error;
         private Vector3 localAxisA;
         private Vector3 localAxisB;
         private Vector3 worldAxisA;
         private Vector3 worldAxisB;
-        private float velocityToImpulse;
+        private double velocityToImpulse;
 
         /// <summary>
         /// Constructs a new constraint which prevents the connected entities from twisting relative to each other.
@@ -114,11 +114,11 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the current relative velocity between the connected entities with respect to the constraint.
         /// </summary>
-        public float RelativeVelocity
+        public double RelativeVelocity
         {
             get
             {
-                float velocityA, velocityB;
+                double velocityA, velocityB;
                 Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
                 Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
                 return velocityA + velocityB;
@@ -128,7 +128,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
+        public double TotalImpulse
         {
             get { return accumulatedImpulse; }
         }
@@ -136,7 +136,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public float Error
+        public double Error
         {
             get { return error; }
         }
@@ -185,7 +185,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// Gets the mass matrix of the constraint.
         /// </summary>
         /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
-        public void GetMassMatrix(out float outputMassMatrix)
+        public void GetMassMatrix(out double outputMassMatrix)
         {
             outputMassMatrix = velocityToImpulse;
         }
@@ -195,14 +195,14 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Solves for velocity.
         /// </summary>
-        public override float SolveIteration()
+        public override double SolveIteration()
         {
-            float velocityA, velocityB;
+            double velocityA, velocityB;
             //Find the velocity contribution from each connection
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            float lambda = -(velocityA + velocityB) + biasVelocity - softness * accumulatedImpulse;
+            double lambda = -(velocityA + velocityB) + biasVelocity - softness * accumulatedImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
@@ -230,7 +230,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
         /// Do any necessary computations to prepare the constraint for this frame.
         /// </summary>
         /// <param name="dt">Simulation step length.</param>
-        public override void Update(float dt)
+        public override void Update(double dt)
         {
             Vector3 aAxisY, aAxisZ;
             Vector3 bAxisY;
@@ -248,10 +248,10 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
             Quaternion.Transform(ref bAxisY, ref rotation, out twistMeasureAxis);
 
             //By dotting the measurement vector with a 2d plane's axes, we can get a local X and Y value.
-            float y, x;
+            double y, x;
             Vector3.Dot(ref twistMeasureAxis, ref aAxisZ, out y);
             Vector3.Dot(ref twistMeasureAxis, ref aAxisY, out x);
-            error = (float) Math.Atan2(y, x);
+            error = (double) Math.Atan2(y, x);
 
             //Debug.WriteLine("Angle: " + angle);
 
@@ -276,13 +276,13 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
 
             //****** VELOCITY BIAS ******//
             //Compute the correction velocity.
-            float errorReduction;
+            double errorReduction;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
             biasVelocity = MathHelper.Clamp(-error * errorReduction, -maxCorrectiveVelocity, maxCorrectiveVelocity);
 
             //****** EFFECTIVE MASS MATRIX ******//
             //Connection A's contribution to the mass matrix
-            float entryA;
+            double entryA;
             Vector3 transformedAxis;
             if (connectionA.isDynamic)
             {
@@ -293,7 +293,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
                 entryA = 0;
 
             //Connection B's contribution to the mass matrix
-            float entryB;
+            double entryB;
             if (connectionB.isDynamic)
             {
                 Matrix3x3.Transform(ref jacobianB, ref connectionB.inertiaTensorInverse, out transformedAxis);
@@ -339,7 +339,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Joints
             //Compute a vector which is perpendicular to the axis.  It'll be added in local space to both connections.
             Vector3 yAxis;
             Vector3.Cross(ref worldAxisA, ref Toolbox.UpVector, out yAxis);
-            float length = yAxis.LengthSquared();
+            double length = yAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref worldAxisA, ref Toolbox.RightVector, out yAxis);

@@ -155,7 +155,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         /// Updates the pair handler's contacts.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        protected virtual void UpdateContacts(float dt)
+        protected virtual void UpdateContacts(double dt)
         {
 
             UpdateContainedPairs();
@@ -190,7 +190,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         /// Updates the pair handler.
         ///</summary>
         ///<param name="dt">Timestep duration.</param>
-        public override void UpdateCollision(float dt)
+        public override void UpdateCollision(double dt)
         {
 
             if (CollidableA.EventTriggerer == null || CollidableB.EventTriggerer == null)
@@ -241,7 +241,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         ///<param name="requester">Collidable requesting the update.</param>
         ///<param name="dt">Timestep duration.</param>
-        public override void UpdateTimeOfImpact(Collidable requester, float dt)
+        public override void UpdateTimeOfImpact(Collidable requester, double dt)
         {
             timeOfImpact = 1;
             foreach (CollidablePairHandler pair in subPairs.Values)

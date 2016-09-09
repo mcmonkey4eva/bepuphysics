@@ -33,7 +33,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
                         ContactData item;
                         contactList.Get(i, out item);
 
-                        float dot;
+                        double dot;
                         Vector3.Dot(ref item.Normal, ref normal, out dot);
                         if (sidedness == TriangleSidedness.Clockwise)
                         {

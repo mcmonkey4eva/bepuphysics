@@ -9,13 +9,13 @@ namespace BEPUutilities
     public static class MathChecker
     {
         /// <summary>
-        /// Checks a single float for validity.  Separate from the extension method to avoid throwing exceptions deep in a call tree.
+        /// Checks a single double for validity.  Separate from the extension method to avoid throwing exceptions deep in a call tree.
         /// </summary>
         /// <param name="f">Value to validate.</param>
         /// <returns>True if the value is invalid, false if it is valid.</returns>
-        private static bool IsInvalid(float f)
+        private static bool IsInvalid(double f)
         {
-            return float.IsNaN(f) || float.IsInfinity(f);
+            return double.IsNaN(f) || double.IsInfinity(f);
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace BEPUutilities
         /// This is only run when the CHECKMATH symbol is defined.
         /// </summary>
         [Conditional("CHECKMATH")]
-        public static void Validate(this float f)
+        public static void Validate(this double f)
         {
             if (IsInvalid(f))
             {
