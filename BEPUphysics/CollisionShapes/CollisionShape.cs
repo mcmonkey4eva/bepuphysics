@@ -14,10 +14,14 @@ namespace BEPUphysics.CollisionShapes
         ///</summary>
         public event Action<CollisionShape> ShapeChanged;
 
+        public void ClearShapeChanged()
+        {
+            ShapeChanged = null;
+        }
+
         protected virtual void OnShapeChanged()
         {
-            if (ShapeChanged != null)
-                ShapeChanged(this);
+                ShapeChanged?.Invoke(this);
         }
 
         public CollisionShape Duplicate()

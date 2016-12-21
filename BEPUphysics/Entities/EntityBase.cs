@@ -445,10 +445,27 @@ namespace BEPUphysics.Entities
                     collisionInformation.Shape.ShapeChanged -= shapeChangedDelegate;
                 collisionInformation = value;
                 if (collisionInformation != null)
+                {
                     collisionInformation.Shape.ShapeChanged += shapeChangedDelegate;
+                }
                 //Entity constructors do their own initialization when the collision information changes.
                 //Might be able to condense it up here, but don't really need it right now.
                 //ShapeChangedHandler(collisionInformation.shape);
+            }
+        }
+
+        ~Entity()
+        {
+            if (collisionInformation != null)
+            {
+                if (collisionInformation.shape != null)
+                {
+                    collisionInformation.shape.ShapeChanged -= shapeChangedDelegate;
+                }
+            }
+            if (material != null)
+            {
+                material.MaterialChanged -= materialChangedDelegate;
             }
         }
 

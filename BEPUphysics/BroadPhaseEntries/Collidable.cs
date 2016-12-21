@@ -42,10 +42,20 @@ namespace BEPUphysics.BroadPhaseEntries
                     shape.ShapeChanged -= shapeChangedDelegate;
                 shape = value;
                 if (shape != null)
+                {
                     shape.ShapeChanged += shapeChangedDelegate;
+                }
                 OnShapeChanged(shape);
 
                 //TODO: Watch out for unwanted references in the delegate lists.
+            }
+        }
+
+        ~Collidable()
+        {
+            if (shape != null)
+            {
+                shape.ShapeChanged -= shapeChangedDelegate;
             }
         }
 
